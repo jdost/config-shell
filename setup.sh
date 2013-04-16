@@ -36,7 +36,7 @@ link() {
    linkIfNot screen/screenrc $HOME/.screenrc
    linkIfNot tmux/tmux.conf $HOME/.tmux.conf
    mkdir -p $XDG_CONFIG_HOME/git
-   linkIfNot git/gitconfig $XDG_CONFIG_HOME/git/gitconfig
+   linkIfNot git/gitconfig $XDG_CONFIG_HOME/git/config
    linkIfNot git/gitignore $HOME/.gitignore
    linkIfNot ack/ackrc $XDG_CONFIG_HOME/ackrc
    linkIfNot mutt $HOME/.mutt
