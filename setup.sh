@@ -1,14 +1,14 @@
 #/bin/sh
 
-if [ -z $XDG_CONFIG_HOME ]; then
-   XDG_CONFIG_HOME = $HOME/.config
+if [ -z "$XDG_CONFIG_HOME" ]; then
+   export XDG_CONFIG_HOME=$HOME/.config
 fi
 
 ####################################################################################
 # Linking {{{
 linkIfNot() {
-   if [ -d $1 ]; then
-      if [ ! -d $2 ]; then
+   if [ -e $1 ]; then
+      if [ ! -e $2 ]; then
          echo "Linking " $1
          ln -s $PWD/$1 $2
       fi
@@ -27,8 +27,8 @@ buildHZSH() {
 link() {
    # Shell/Environment
    linkIfNot environment/term $HOME/.local/environment/term
-   linkIfNot shell $XDG_CONFIG_HOME/zsh
-   linkIfNot shell/zshrc $HOME/.zshrc
+   linkIfNot zsh $XDG_CONFIG_HOME/zsh
+   linkIfNot zsh/zshrc $HOME/.zshrc
    buildHZSH
    #linkIfNot environment/env_def $HOME/.env/def
 
@@ -41,7 +41,7 @@ link() {
    linkIfNot ack/ackrc $XDG_CONFIG_HOME/ackrc
    linkIfNot mutt $HOME/.mutt
    linkIfNot weechat $HOME/.weechat
-   linkIfNot irssi $HOME/.irssi
+   #linkIfNot irssi $HOME/.irssi
    #linkIfNot ncmpcpp $XDG_CONFIG_HOME/.ncmpcpp
 } # }}}
 ####################################################################################
