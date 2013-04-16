@@ -7,7 +7,7 @@ local FMT_PATH="%F{1}%R%F{2}/%S%f"
 
 if [ -x $PLUGIN_DIR/hzsh_path ]; then
    local FANCY_PATH_CMD="$PLUGIN_DIR/hzsh_path"
-else; then
+else
    local FANCY_PATH_CMD="$PLUGIN_DIR/rzsh_path"
 fi
 
@@ -38,7 +38,7 @@ ${VENV}%F{202}»%f "
 precmd() {
    vcs_info
    setprompt
-   print -Pn "\e]0;%n@%m: %~\a"
+   #print -Pn "\e]0;%n@%m: %~\a"
 }
 
 preexec() {

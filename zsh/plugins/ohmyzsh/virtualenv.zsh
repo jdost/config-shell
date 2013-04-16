@@ -42,5 +42,7 @@ for wrapsource in "/usr/bin/virtualenvwrapper.sh" "/etc/bash_completion.d/virtua
 done
 
 if [ $WRAPPER_FOUND -eq 0 ] ; then
-  print "zsh virtualenvwrapper plugin: Couldn't activate virtualenvwrapper. Please run \`pip install virtualenvwrapper\`."
+   if type pip > /dev/null; then
+      print "zsh virtualenvwrapper plugin: Couldn't activate virtualenvwrapper. Please run \`pip install virtualenvwrapper\`."
+   fi
 fi

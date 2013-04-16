@@ -10,7 +10,7 @@ ARGV[0].split("/").each { |d|
       d = "/"
    end
 
-   print "%F{#{@i}} \u00BB " unless @i < 1
+   print "%F{#{@i}} » " unless @i < 1
    print "%F{240}#{d}"
    @i += 1
 }

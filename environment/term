@@ -10,7 +10,7 @@ export WORKON_HOME=$HOME/.local/virtualenvs
 export VIRTUALENVWRAPPER_HOOK_DIR=$HOME/.local/virtualenvs
 export VIRTUALENVWRAPPER_LOG_DIR=$HOME/.local/virtualenvs
 
-export PATH=$PATH:~/.bin:$(ruby -rubygems -e "puts Gem.user_dir")/bin:~/.cabal/bin:/usr/local/heroku/bin
+export PATH=$PATH:~/.bin:~/.cabal/bin:/usr/local/heroku/bin
 export NODE_PATH=$NODE_PATH:/usr/lib/jsctags
 
 # Aliases

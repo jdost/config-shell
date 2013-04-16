@@ -8,6 +8,13 @@ autoload -U vcs_info && vcs_info
 zmodload zsh/complist
 zmodload zsh/terminfo
 
+# Environment Vars {{{
+for r in $HOME/.local/environment/*; do
+   if [[ $DEBUG > 0 ]]; then
+      echo "zsh: sourcing $r"
+   fi
+   source $r
+done # }}}
 # Lines configured by zsh-newuser-install
 HISTFILE=$XDG_CACHE_HOME/histfile
 HISTSIZE=1000
@@ -25,13 +32,6 @@ setopt nobeep
 setopt correct
 setopt prompt_subst
 
-# Environment Vars {{{
-for r in $HOME/.local/environment/*; do
-   if [[ $DEBUG > 0 ]]; then
-      echo "zsh: sourcing $r"
-   fi
-   source $r
-done # }}}
 # Load settings {{{
 for r in $ZSH_SETTINGS_DIR/*.zsh; do
    if [[ $DEBUG > 0 ]]; then
