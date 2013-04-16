@@ -1,0 +1,16 @@
+# Compiled files
+*.py[co]
+*.hi
+*.o
+
+# Stage files
+*.back
+*.bak
+*.temp
+*.tmp
+*.orig
+*.swp
+*~
+
+# VirtualEnv project pointer
+.venv

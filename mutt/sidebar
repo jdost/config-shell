@@ -1,0 +1,16 @@
+# settings
+  set sidebar_visible = yes
+  set sidebar_width = 25
+
+  set sidebar_delim = '│'
+  set status_format = "──/ %v /─────┴──────/ %f %m%?n? [+%n]?%?d?"
+
+# colors
+color sidebar_new brightyellow default
+
+# bindings
+bind index,pager \CJ sidebar-next
+bind index,pager \CK sidebar-prev
+bind index,pager \CL sidebar-open
+
+# vim: ft=muttrc

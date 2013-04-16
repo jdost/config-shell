@@ -1,0 +1,40 @@
+[user]
+   name = $USER
+   email = $EMAIL
+[github]
+   user = $GITHUB_USER
+
+[core]
+   editor = vim
+   excludesfile = ~/.gitignore
+
+[push]
+   default = simple
+
+[alias]
+   st = status -s
+   lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%C(bold blue)<%an>%Creset' --abbrev-commit
+   in = !git remote update -p; log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%C(bold blue)<%an>%Creset' --abbrev-commit ..@{u}
+   out = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%C(bold blue)<%an>%Creset' --abbrev-commit @{u}..
+   subup = submodule -q foreach git pull -q origin master
+   standup = log --since yesterday --author $GITHUB
+
+[color]
+   branch = auto
+   diff = auto
+   status = auto
+[color "branch"]
+   current = yellow reverse
+   local = yellow
+   remote = green
+[color "diff"]
+   meta = yellow bold
+   frag = magenta bold
+   old = red bold
+   new = green bold
+[color "status"]
+   added = yellow
+   changed = green
+   untracked = cyan
+
+# vim: ft=gitconfig

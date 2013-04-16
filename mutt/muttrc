@@ -1,0 +1,52 @@
+# files
+  set alias_file = ~/.mutt/alias
+  set certificate_file = ~/.mutt/certificates
+  set header_cache = ~/.mutt/cache/headers
+  set message_cachedir = ~/.mutt/cache/bodies
+  set mailcap_path = ~/.mutt/mailcap
+  set signature = ~/.mutt/sig
+  set tmpdir = ~/.mutt/temp
+# commands
+  set editor = "vim +:silent+?^$" # skip to last blank line
+  set query_command = "mail-query '%s' ~/.mail/gmail/INBOX"
+
+# maildir settings
+  set mbox_type = Maildir
+  set folder = ~/.mutt/mail
+  set spoolfile = "+GMail/Inbox" # Gmail inbox is default
+
+# options
+unset confirmappend
+  set delete
+  set mail_check = 5
+unset markers
+unset mark_old
+  set pipe_decode
+  set reverse_alias
+  set sort = threads
+  set sort_aux = reverse-last-date-received
+unset sort_re
+  set thread_received
+unset wait_key
+# pager
+  set pager_index_lines = 10
+  set pager_context = 5
+  set pager_stop
+
+# message format handling
+auto_view text/html
+alternative_order text/plain text/enriched text/html
+
+# headers
+ignore *
+unignore from: to: cc: date: subject
+hdr_order from: to: cc: date: subject
+
+# lists/folders
+source ~/.mutt/mailboxes
+source `FILE=$HOME/.mutt/sidebar; mutt -v | grep -Fq sidebar || FILE=/dev/null; echo $FILE`
+source ~/.mutt/colors
+
+source ~/.mutt/keybindings
+
+# vim: ft=muttrc

@@ -1,0 +1,59 @@
+zstyle ':completion:*' completer _complete _ignored
+zstyle :compinstall filename $HOME'/.zshrc'
+
+autoload -U compinit && compinit
+autoload -U colors && colors
+autoload -U vcs_info && vcs_info
+
+zmodload zsh/complist
+zmodload zsh/terminfo
+
+# Lines configured by zsh-newuser-install
+HISTFILE=$XDG_CACHE_HOME/histfile
+HISTSIZE=1000
+SAVEHIST=1000
+bindkey -e
+# End of lines configured by zsh-newuser-install
+
+FPATH=$FPATH:$XDG_CONFIG_HOME/zsh/prompts
+PLUGIN_DIR=$XDG_CONFIG_HOME/zsh/plugins
+ZSH_SETTINGS_DIR=$XDG_CONFIG_HOME/zsh/settings
+ZSHRC=$HOME/.zshrc
+
+# Shell options
+setopt nobeep
+setopt correct
+setopt prompt_subst
+
+# Environment Vars {{{
+if [ -f ~/.env/def ]; then
+   . ~/.env/def
+fi # }}}
+# Aliases {{{
+if [ -f ~/.env/aliases ]; then
+   . ~/.env/aliases
+fi # }}}
+# Machine Specific {{{
+if [ -f ~/.env/local ]; then
+   . ~/.env/local
+fi # }}}
+# Functions {{{
+for r in $HOME/.env/functions/*; do
+   if [[ $DEBUG > 0 ]]; then
+      echo "zsh: sourcing $r"
+   fi
+   source $r
+done # }}}
+# Load settings {{{
+for r in $ZSH_SETTINGS_DIR/*.zsh; do
+   if [[ $DEBUG > 0 ]]; then
+      echo "zsh: sourcing $r"
+   fi
+   source $r
+done # }}}
+# set shell colors {{{
+if [ -f $XDG_CONFIG_HOME/zsh/colors ]; then
+   . $XDG_CONFIG_HOME/zsh/colors
+fi # }}}
+
+# vim: ft=zsh foldmethod=marker

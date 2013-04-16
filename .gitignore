@@ -1,0 +1,7 @@
+*.o
+*.hi
+hzsh_path
+
+weechat/irc.conf
+weechat/*.log
+mutt/mailboxes
