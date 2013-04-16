@@ -41,7 +41,7 @@ buildHZSH() {
 
 link() {
    # Shell/Environment
-   linkIfNot environment $HOME/.env
+   linkIfNot environment/term $HOME/.local/environment/term
    linkIfNot shell $XDG_CONFIG_HOME/zsh
    linkIfNot shell/zshrc $HOME/.zshrc
    buildHZSH
@@ -83,6 +83,7 @@ build_arch() {
    run_pacman
    mkdir $HOME/.bin
    mkdir $HOME/.aur
+   mkdir -p $HOME/.local/environment
 }
 
 update_arch() {
@@ -107,6 +108,7 @@ run_apt() {
 build_ubuntu() {
    run_apt
    mkdir $HOME/.bin
+   mkdir -p $HOME/.local/environment
 }
 
 update_ubuntu() {

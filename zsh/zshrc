@@ -26,19 +26,7 @@ setopt correct
 setopt prompt_subst
 
 # Environment Vars {{{
-if [ -f ~/.env/def ]; then
-   . ~/.env/def
-fi # }}}
-# Aliases {{{
-if [ -f ~/.env/aliases ]; then
-   . ~/.env/aliases
-fi # }}}
-# Machine Specific {{{
-if [ -f ~/.env/local ]; then
-   . ~/.env/local
-fi # }}}
-# Functions {{{
-for r in $HOME/.env/functions/*; do
+for r in $HOME/.local/environment/*; do
    if [[ $DEBUG > 0 ]]; then
       echo "zsh: sourcing $r"
    fi
