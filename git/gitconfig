@@ -1,9 +1,3 @@
-[user]
-   name = $USER
-   email = $EMAIL
-[github]
-   user = $GITHUB_USER
-
 [core]
    editor = vim
    excludesfile = ~/.gitignore

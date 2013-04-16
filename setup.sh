@@ -1,5 +1,9 @@
 #/bin/sh
 
+if [ -z $XDG_CONFIG_HOME ]; then
+   XDG_CONFIG_HOME = $HOME/.config
+fi
+
 ####################################################################################
 # Linking {{{
 linkIfNot() {
@@ -14,27 +18,8 @@ linkIfNot() {
    fi
 }
 
-conv() {
-   echo -n > $2
-   while read line; do
-      eval echo "$line" >> $2
-   done < "$1"
-}
-
-echoIfNot() {
-   if [ -d $1 ]; then
-      if [ ! -d $2 ]; then
-         echo "Converting ", $1
-         conv $PWD/$1 $2
-      fi
-   else
-      echo "Converting ", $1
-      conv $PWD/$1 $2
-   fi
-}
-
 buildHZSH() {
-   if [ $(which ghc) =~ "/bin" ]; then # has ghc
+   if type ghc > /dev/null ; then # has ghc
       ghc zsh/plugins/hzsh_path.src/zsh_path.hs -o zsh/plugins/hzsh_path
    fi
 }
@@ -50,13 +35,14 @@ link() {
    # Apps
    linkIfNot screen/screenrc $HOME/.screenrc
    linkIfNot tmux/tmux.conf $HOME/.tmux.conf
-   echoIfNot git/gitconfig $HOME/.gitconfig
+   mkdir -p $XDG_CONFIG_HOME/git
+   linkIfNot git/gitconfig $XDG_CONFIG_HOME/git/gitconfig
    linkIfNot git/gitignore $HOME/.gitignore
    linkIfNot ack/ackrc $XDG_CONFIG_HOME/ackrc
    linkIfNot mutt $HOME/.mutt
    linkIfNot weechat $HOME/.weechat
    linkIfNot irssi $HOME/.irssi
-   linkIfNot ncmpcpp $XDG_CONFIG_HOME/.ncmpcpp
+   #linkIfNot ncmpcpp $XDG_CONFIG_HOME/.ncmpcpp
 } # }}}
 ####################################################################################
 # Install - Arch {{{
@@ -118,7 +104,7 @@ update_ubuntu() {
 } # }}}
 ####################################################################################
 
-if [[ -z "${1}" ]]; then
+if [ -z "${1}" ]; then
    echo "Missing action. Syntax: ${0} [command]"
    echo "  Options:"
    echo "    init    -- installs associated programs and creates all symlinks"
@@ -129,13 +115,13 @@ if [[ -z "${1}" ]]; then
 fi
 case "${1}" in
    'init')
-      [[ ${which pacman} =~ "/bin" ]] && build_arch
-      [[ ${which apt-get} =~ "/bin" ]] && build_ubuntu
+      type pacman > /dev/null  && build_arch
+      type apt-get > /dev/null && build_ubuntu
       link
       ;;
    'update')
-      [[ ${which pacman} =~ "/bin" ]] && update_arch
-      [[ ${which apt-get} =~ "/bin" ]] && update_ubuntu
+      type pacman > /dev/null && update_arch
+      type apt-get > /dev/null && update_ubuntu
       link
       ;;
    'link')
