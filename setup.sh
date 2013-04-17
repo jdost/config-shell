@@ -35,8 +35,12 @@ link() {
    # Apps
    linkIfNot screen/screenrc $HOME/.screenrc
    linkIfNot tmux/tmux.conf $HOME/.tmux.conf
-   mkdir -p $XDG_CONFIG_HOME/git
-   linkIfNot git/gitconfig $XDG_CONFIG_HOME/git/config
+   if [[ "$(git --version)" > "git version 1.8.0" ]]; then
+      mkdir -p $XDG_CONFIG_HOME/git
+      linkIfNot git/gitconfig $XDG_CONFIG_HOME/git/config
+   else
+      linkIfNot git/gitconfig $HOME/.gitconfig
+   fi
    linkIfNot git/gitignore $HOME/.gitignore
    linkIfNot ack/ackrc $XDG_CONFIG_HOME/ackrc
    linkIfNot mutt $HOME/.mutt
@@ -67,6 +71,7 @@ run_pacman() {
 
 build_arch() {
    run_pacman
+   git sudmodule init
    mkdir $HOME/.bin
    mkdir $HOME/.aur
    mkdir -p $HOME/.local/environment
@@ -93,6 +98,7 @@ run_apt() {
 
 build_ubuntu() {
    run_apt
+   git sudmodule init
    mkdir $HOME/.bin
    mkdir -p $HOME/.local/environment
 }
