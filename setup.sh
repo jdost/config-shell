@@ -75,6 +75,7 @@ build_arch() {
    mkdir -p $HOME/.bin
    mkdir -p $HOME/.aur
    mkdir -p $HOME/.local/environment
+   touch zsh/settings/10-directories.zsh
 }
 
 update_arch() {
@@ -101,6 +102,7 @@ build_ubuntu() {
    git submodule init
    mkdir $HOME/.bin
    mkdir -p $HOME/.local/environment
+   touch zsh/settings/10-directories.zsh
 }
 
 update_ubuntu() {
