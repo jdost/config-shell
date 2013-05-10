@@ -9,6 +9,9 @@ zmodload zsh/complist
 zmodload zsh/terminfo
 
 # Environment Vars {{{
+export XDG_CONFIG_HOME=$HOME/.config
+export XDG_CACHE_HOME=$HOME/.cache
+
 for r in $HOME/.local/environment/*; do
    if [[ $DEBUG > 0 ]]; then
       echo "zsh: sourcing $r"

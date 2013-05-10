@@ -71,9 +71,9 @@ run_pacman() {
 
 build_arch() {
    run_pacman
-   git sudmodule init
-   mkdir $HOME/.bin
-   mkdir $HOME/.aur
+   git submodule init
+   mkdir -p $HOME/.bin
+   mkdir -p $HOME/.aur
    mkdir -p $HOME/.local/environment
 }
 
@@ -98,7 +98,7 @@ run_apt() {
 
 build_ubuntu() {
    run_apt
-   git sudmodule init
+   git submodule init
    mkdir $HOME/.bin
    mkdir -p $HOME/.local/environment
 }

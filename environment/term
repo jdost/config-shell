@@ -10,14 +10,14 @@ export WORKON_HOME=$HOME/.local/virtualenvs
 export VIRTUALENVWRAPPER_HOOK_DIR=$HOME/.local/virtualenvs
 export VIRTUALENVWRAPPER_LOG_DIR=$HOME/.local/virtualenvs
 
-export PATH=$PATH:~/.bin:~/.cabal/bin:/usr/local/heroku/bin
+export PATH=~/.bin:$PATH:~/.cabal/bin:/usr/local/heroku/bin
 export NODE_PATH=$NODE_PATH:/usr/lib/jsctags
 
 # Aliases
 # ls replace {{{
 if [ -f /usr/bin/vendor_perl/ls++ ]; then
    alias ls=' ls++'
-   alias ll='\ls --color=auto -F -l'
+   alias ll=' ls++ --potsf'
    alias _ls='/bin/ls --color=auto -F'
 else
    alias ls='ls --color=auto -F'
