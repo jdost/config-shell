@@ -16,3 +16,18 @@ bindkey -M vicmd "??" history-beginning-search-forward
 
 bindkey -M vicmd "q" push-line
 bindkey -M vicmd "!" edit-command-output
+
+#
+function rationalize_dot {
+   local MATCH # keep regex match from leaking into the environment
+   if [[ $LBUFFER =~ '(^|/| |      |'$'\n''|\||;|&)\.\.$' ]]; then
+      LBUFFER+=/
+      zle self-insert
+      zle self-insert
+   else
+      zle self-insert
+   fi
+}
+zle -N rationalize_dot
+bindkey . rationalize_dot
+bindkey -M isearch . self-insert
