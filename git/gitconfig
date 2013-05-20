@@ -9,6 +9,7 @@
    out = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%C(bold blue)<%an>%Creset' --abbrev-commit @{u}..
    subup = submodule -q foreach git pull -q origin master
    standup = log --since yesterday --author $GITHUB
+   serve = !git daemon --reuseaddr --verbose --base-path=. --export-all ./.git
 
 [color]
    branch = auto
