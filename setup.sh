@@ -44,7 +44,7 @@ link() {
    linkIfNot git/gitignore $HOME/.gitignore
    linkIfNot ack/ackrc $XDG_CONFIG_HOME/ackrc
    linkIfNot mutt $HOME/.mutt
-   linkIfNot weechat $HOME/.weechat
+   linkIfNot weechat $XDG_CONFIG_HOME/weechat
    #linkIfNot irssi $HOME/.irssi
    #linkIfNot ncmpcpp $XDG_CONFIG_HOME/.ncmpcpp
 } # }}}
