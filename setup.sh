@@ -19,7 +19,7 @@ linkIfNot() {
 }
 
 buildHZSH() {
-   if type ghc > /dev/null ; then # has ghc
+   if type ghc %1> /dev/null ; then # has ghc
       ghc zsh/plugins/hzsh_path.src/zsh_path.hs -o zsh/plugins/hzsh_path
    fi
 }
@@ -45,19 +45,22 @@ link() {
    linkIfNot ack/ackrc $XDG_CONFIG_HOME/ackrc
    linkIfNot mutt $HOME/.mutt
    linkIfNot weechat $HOME/.weechat
+   #linkIfNot gem/gemrc $HOME/.gemrc
    #linkIfNot irssi $HOME/.irssi
    #linkIfNot ncmpcpp $XDG_CONFIG_HOME/.ncmpcpp
 } # }}}
 ####################################################################################
 # Install - Arch {{{
 aurGet() {
+   local END_DIR=$PWD
    cd $HOME/.aur/
    ABBR=${1:0:2}
    wget http://aur.archlinux.org/packages/$ABBR/$1/$1.tar.gz
    tar -xf "$1.tar.gz"
    rm "$1.tar.gz"
    cd "$1"
-   makepkg
+   makepkg -si
+   cd $END_DIR
 }
 
 run_pacman() {
@@ -123,13 +126,13 @@ if [ -z "${1}" ]; then
 fi
 case "${1}" in
    'init')
-      type pacman > /dev/null  && build_arch
-      type apt-get > /dev/null && build_ubuntu
+      type pacman %1> /dev/null  && build_arch
+      type apt-get %1> /dev/null && build_ubuntu
       link
       ;;
    'update')
-      type pacman > /dev/null && update_arch
-      type apt-get > /dev/null && update_ubuntu
+      type pacman %1> /dev/null && update_arch
+      type apt-get %1> /dev/null && update_ubuntu
       link
       ;;
    'link')

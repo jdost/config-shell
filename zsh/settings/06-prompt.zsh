@@ -6,9 +6,9 @@ local FMT_ACTION="(%F{3}%a%f)"
 local FMT_PATH="%F{1}%R%F{2}/%S%f"
 
 if [ -x $PLUGIN_DIR/hzsh_path ]; then
-   FANCY_PATH_CMD="$PLUGIN_DIR/hzsh_path"
+   local FANCY_PATH_CMD="$PLUGIN_DIR/hzsh_path"
 else
-   FANCY_PATH_CMD="$PLUGIN_DIR/rzsh_path"
+   local FANCY_PATH_CMD="$PLUGIN_DIR/rzsh_path"
 fi
 
 setprompt() {
