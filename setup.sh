@@ -47,7 +47,7 @@ link() {
    linkIfNot weechat $XDG_CONFIG_HOME/weechat
    #linkIfNot gem/gemrc $HOME/.gemrc
    #linkIfNot irssi $HOME/.irssi
-   #linkIfNot ncmpcpp $XDG_CONFIG_HOME/.ncmpcpp
+   linkIfNot ncmpcpp $XDG_CONFIG_HOME/ncmpcpp
 } # }}}
 ####################################################################################
 # Install - Arch {{{
@@ -75,6 +75,7 @@ run_pacman() {
 build_arch() {
    run_pacman
    git submodule init
+   git submodule update
    mkdir -p $HOME/.bin
    mkdir -p $HOME/.aur
    mkdir -p $HOME/.local/environment
