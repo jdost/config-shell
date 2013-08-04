@@ -45,7 +45,8 @@ link() {
    linkIfNot ack/ackrc $XDG_CONFIG_HOME/ackrc
    linkIfNot mutt $HOME/.mutt
    linkIfNot weechat $HOME/.weechat
-   #linkIfNot gem/gemrc $HOME/.gemrc
+   linkIfNot gem/gemrc $HOME/.gemrc
+   linkIfNot npm/npmrc $XDG_CONFIG_HOME/npmrc
    #linkIfNot irssi $HOME/.irssi
    #linkIfNot ncmpcpp $XDG_CONFIG_HOME/.ncmpcpp
 } # }}}
