@@ -44,11 +44,11 @@ link() {
    linkIfNot git/gitignore $HOME/.gitignore
    linkIfNot ack/ackrc $XDG_CONFIG_HOME/ackrc
    linkIfNot mutt $HOME/.mutt
-   linkIfNot weechat $HOME/.weechat
    linkIfNot gem/gemrc $HOME/.gemrc
    linkIfNot npm/npmrc $XDG_CONFIG_HOME/npmrc
+   linkIfNot weechat $XDG_CONFIG_HOME/weechat
    #linkIfNot irssi $HOME/.irssi
-   #linkIfNot ncmpcpp $XDG_CONFIG_HOME/.ncmpcpp
+   linkIfNot ncmpcpp $XDG_CONFIG_HOME/ncmpcpp
 } # }}}
 ####################################################################################
 # Install - Arch {{{
@@ -76,6 +76,7 @@ run_pacman() {
 build_arch() {
    run_pacman
    git submodule init
+   git submodule update
    mkdir -p $HOME/.bin
    mkdir -p $HOME/.aur
    mkdir -p $HOME/.local/environment
