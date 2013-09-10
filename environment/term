@@ -13,6 +13,8 @@ export VIRTUALENVWRAPPER_LOG_DIR=$HOME/.local/virtualenvs
 export NPM_CONFIG_CACHE=$HOME/.cache/npm
 export NPM_CONFIG_USERCONFIG=$XDG_CONFIG_HOME/npmrc
 
+export PIP_CONFIG_FILE=$XDG_CONFIG_HOME/pip.conf
+
 #export PATH=~/.bin:$PATH:~/.cabal/bin:/usr/local/heroku/bin
 [[ $PATH != *$HOME/.bin* ]] && export PATH=~/.bin:$PATH
 [[ $PATH != *.cabal* ]] && export PATH=$PATH:~/.cabal/bin

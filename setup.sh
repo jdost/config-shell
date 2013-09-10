@@ -32,6 +32,11 @@ link() {
    buildHZSH
    #linkIfNot environment/env_def $HOME/.env/def
 
+   # Language package managers
+   linkIfNot gem/gemrc $HOME/.gemrc
+   linkIfNot npm/npmrc $XDG_CONFIG_HOME/npmrc
+   linkIfNot pip/pip.conf $XDG_CONFIG_HOME/pip.conf
+
    # Apps
    linkIfNot screen/screenrc $HOME/.screenrc
    linkIfNot tmux/tmux.conf $HOME/.tmux.conf
@@ -44,8 +49,7 @@ link() {
    linkIfNot git/gitignore $HOME/.gitignore
    linkIfNot ack/ackrc $XDG_CONFIG_HOME/ackrc
    linkIfNot mutt $HOME/.mutt
-   linkIfNot gem/gemrc $HOME/.gemrc
-   linkIfNot npm/npmrc $XDG_CONFIG_HOME/npmrc
+
    linkIfNot weechat $XDG_CONFIG_HOME/weechat
    #linkIfNot irssi $HOME/.irssi
    linkIfNot ncmpcpp $XDG_CONFIG_HOME/ncmpcpp
