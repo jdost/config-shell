@@ -10,6 +10,7 @@
    subup = submodule -q foreach git pull -q origin master
    standup = log --since yesterday --author $GITHUB
    serve = !git daemon --reuseaddr --verbose --base-path=. --export-all ./.git
+   churn = !git --no-pager log --name-only --oneline | grep -v ' ' | sort | uniq -c | sort -nr | head
 
 [color]
    branch = auto
