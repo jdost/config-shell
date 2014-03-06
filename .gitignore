@@ -3,6 +3,7 @@
 hzsh_path
 
 zsh/settings/10-directories.zsh
+zsh/settings/20-tmux.zsh
 weechat/irc.conf
 weechat/*.log
 mutt/mailboxes

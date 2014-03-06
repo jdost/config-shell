@@ -30,6 +30,7 @@ link() {
    linkIfNot zsh $XDG_CONFIG_HOME/zsh
    linkIfNot zsh/zshrc $HOME/.zshrc
    buildHZSH
+   linkIfNot inputrc/inputrc $XDG_CONFIG_HOME/inputrc
    #linkIfNot environment/env_def $HOME/.env/def
 
    # Language package managers
@@ -40,6 +41,8 @@ link() {
    # Apps
    linkIfNot screen/screenrc $HOME/.screenrc
    linkIfNot tmux/tmux.conf $HOME/.tmux.conf
+   linkIfNot tmux/functions.zsh $XDG_CONFIG_HOME/zsh/settings/20-tmux.zsh
+   linkIfNot tmux/layouts $XDG_CONFIG_HOME/tmux
    if [[ "$(git --version)" > "git version 1.8.0" ]]; then
       mkdir -p $XDG_CONFIG_HOME/git
       linkIfNot git/gitconfig $XDG_CONFIG_HOME/git/config
