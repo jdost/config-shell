@@ -1,3 +1,5 @@
+# VI mode
+bindkey -v
 # Key bindings
 bindkey "${terminfo[khome]}"  beginning-of-line    # Home
 bindkey "${terminfo[kend]}"   end-of-line          # End
@@ -8,6 +10,7 @@ bindkey "^[0c"   forward-word         # Ctrl + Right
 bindkey "^[0d"   backward-word        # Ctrl + Left
 
 # vim bindings
+bindkey -M viins "jj" vi-cmd-mode # use jj for escape
 bindkey -M vicmd "/" history-incremental-search-backward
 bindkey -M vicmd "?" history-incremental-search-forward
 bindkey -M vicmd "//" history-beginning-search-backward
