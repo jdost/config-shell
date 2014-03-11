@@ -2,6 +2,9 @@
    editor = vim
    excludesfile = ~/.gitignore
 
+[push]
+	default = simple
+
 [alias]
    st = status -s
    co = checkout
