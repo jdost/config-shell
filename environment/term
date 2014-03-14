@@ -36,4 +36,9 @@ alias email='mutt'
 alias ncmpcpp='ncmpcpp -c $XDG_CONFIG_HOME/ncmpcpp/config'
 alias weechat='weechat-curses -d $XDG_CONFIG_HOME/weechat'
 
+# GPG-Agent startup
+if command -v gpg-agent >/dev/null 2>&1 ; then
+   [ -z "$GPG_AGENT_INFO" ] && eval $(gpg-agent --daemon)
+fi
+
 # vim: ft=zsh:foldmethod=marker
