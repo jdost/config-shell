@@ -14,6 +14,9 @@ export PIP_CONFIG_FILE=$XDG_CONFIG_HOME/pip.conf
 
 export INPUTRC=$XDG_CONFIG_HOME/inputrc
 
+export GNUPGHOME=$HOME/.local/gpg
+export PASSWORD_STORE_DIR=$HOME/.local/password_store
+
 # Aliases
 # ls replace {{{
 if [ -f /usr/bin/vendor_perl/ls++ ] || [ -f /usr/local/bin/ls++ ]; then
