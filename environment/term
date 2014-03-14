@@ -2,9 +2,6 @@
 export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python2
 export PIP_DOWNLOAD_CACHE=$XDG_CACHE_HOME/pip
 
-export MPD_HOST=localhost
-export MPD_PORT=9009
-
 export ACKRC=$XDG_CONFIG_HOME/ackrc
 export WORKON_HOME=$HOME/.local/virtualenvs
 export VIRTUALENVWRAPPER_HOOK_DIR=$HOME/.local/virtualenvs
@@ -15,22 +12,17 @@ export NPM_CONFIG_USERCONFIG=$XDG_CONFIG_HOME/npmrc
 
 export PIP_CONFIG_FILE=$XDG_CONFIG_HOME/pip.conf
 
-#export PATH=~/.bin:$PATH:~/.cabal/bin:/usr/local/heroku/bin
-[[ $PATH != *$HOME/.bin* ]] && export PATH=~/.bin:$PATH
-[[ $PATH != *.cabal* ]] && export PATH=$PATH:~/.cabal/bin
-[[ $PATH != *heroku* ]] && export PATH=$PATH:/usr/local/heroku/bin
-#export NODE_PATH=$NODE_PATH:/usr/lib/jsctags
-[[ $NODE_PATH != *jsctags* ]] && export NODE_PATH=$NODE_PATH:/usr/lib/jsctags
+export INPUTRC=$XDG_CONFIG_HOME/inputrc
 
 # Aliases
 # ls replace {{{
-if [ -f /usr/bin/vendor_perl/ls++ ]; then
+if [ -f /usr/bin/vendor_perl/ls++ ] || [ -f /usr/local/bin/ls++ ]; then
    alias ls=' ls++'
    alias ll=' ls++ --potsf'
    alias _ls='/bin/ls --color=auto -F'
 else
-   alias ls='ls --color=auto -F'
-   alias ll='ls --color=auto -F -l'
+   alias ls='ls -F'
+   alias ll='ls -F -l'
 fi # }}}
 
 alias diff='colordiff'
@@ -41,60 +33,4 @@ alias email='mutt'
 alias ncmpcpp='ncmpcpp -c $XDG_CONFIG_HOME/ncmpcpp/config'
 alias weechat='weechat-curses -d $XDG_CONFIG_HOME/weechat'
 
-# Functions
-# most used commands {{{
-mostused () {
-   sed -n 's/^\([a-z]*\) .*\1//p' $HISTFILE | sort | uniq -c | sort -n -k1 |
-      tail -25 | tac
-}
-# }}}
-
-# tmux window naming {{{
-settitle () { printf "\033k$1\033\\" }
-# }}}
-
-# try x times until success {{{
-try () {
-   local COUNT=-1
-   if [[ $1 =~ ^[0-9]+$ ]]; then
-      COUNT=$1
-      shift
-   fi
-
-   local STATUS=0
-
-   while [ "$COUNT" -ne 0 ]; do
-      let COUNT-=1
-      $*
-      STATUS=$?
-      if [ $STATUS -eq 0 ]; then
-         break
-      fi
-   done
-}
-# }}}
-
-# store website offline {{{
-export OFFLINE_LOC=$HOME/downloads/offline
-offline () {
-   local originDir=$PWD
-   cd $OFFLINE_LOC
-
-   local dirName=`print "$1" | sed "s/\//_/g"`
-   mkdir "$dirName"
-   cd "$dirName"
-
-   local domain=`echo "$1" | sed "s#/.*##"`
-   wget --recursive \
-      --no-clobber \
-      --page-requisites \
-      --html-extension \
-      --convert-links \
-      --domains $domain \
-      --no-parent \
-         $1
-   cd $originDir
-}
-# }}}
-
-# vim: ft=zsh foldmethod=marker
+# vim: ft=zsh:foldmethod=marker

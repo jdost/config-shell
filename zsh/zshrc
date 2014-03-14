@@ -22,7 +22,6 @@ done # }}}
 HISTFILE=$XDG_CACHE_HOME/histfile
 HISTSIZE=10000
 SAVEHIST=10000
-bindkey -e
 # End of lines configured by zsh-newuser-install
 
 FPATH=$FPATH:$XDG_CONFIG_HOME/zsh/prompts
