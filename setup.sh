@@ -19,7 +19,7 @@ linkIfNot() {
 }
 
 buildHZSH() {
-   if type ghc %1> /dev/null ; then # has ghc
+   if command -v ghc >/dev/null 2>&1 ; then # has ghc
       ghc zsh/plugins/hzsh_path.src/zsh_path.hs -o zsh/plugins/hzsh_path
    fi
 }
@@ -58,7 +58,7 @@ link() {
 # Install - Arch {{{
 aurGet() {
    local END_DIR=$PWD
-   cd $HOME/.aur/
+   cd $HOME/.local/aur/
    ABBR=${1:0:2}
    wget http://aur.archlinux.org/packages/$ABBR/$1/$1.tar.gz
    tar -xf "$1.tar.gz"
@@ -82,7 +82,7 @@ build_arch() {
    git submodule init
    git submodule update
    mkdir -p $HOME/.bin
-   mkdir -p $HOME/.aur
+   mkdir -p $HOME/.local/aur
    mkdir -p $HOME/.local/environment
    touch zsh/settings/10-directories.zsh
 }
@@ -132,13 +132,13 @@ if [ -z "${1}" ]; then
 fi
 case "${1}" in
    'init')
-      type pacman %1> /dev/null  && build_arch
-      type apt-get %1> /dev/null && build_ubuntu
+      command -v pacman >/dev/null 2>&1  && build_arch
+      command -v apt-get >/dev/null 2>&1 && build_ubuntu
       link
       ;;
    'update')
-      type pacman %1> /dev/null && update_arch
-      type apt-get %1> /dev/null && update_ubuntu
+      command -v pacman >/dev/null 2>&1  && update_arch
+      command -v apt-get >/dev/null 2>&1 && update_ubuntu
       link
       ;;
    'link')
