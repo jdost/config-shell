@@ -39,6 +39,9 @@ link() {
    linkIfNot pip/pip.conf $XDG_CONFIG_HOME/pip.conf
 
    # Apps
+   mkdir -p $HOME/.local/gpg
+   linkIfNot gpg/gpg.conf $HOME/.local/gpg/gpg.conf
+   linkIfNot gpg/gpg-agent.conf $HOME/.local/gpg/gpg-agent.conf
    linkIfNot screen/screenrc $HOME/.screenrc
    linkIfNot tmux/tmux.conf $HOME/.tmux.conf
    linkIfNot tmux/functions.zsh $XDG_CONFIG_HOME/zsh/settings/20-tmux.zsh
