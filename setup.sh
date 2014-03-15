@@ -27,6 +27,7 @@ buildHZSH() {
 link() {
    # Shell/Environment
    linkIfNot environment/term $HOME/.local/environment/term
+   linkIfNot environment/general $HOME/.local/environment/general
    linkIfNot zsh $XDG_CONFIG_HOME/zsh
    linkIfNot zsh/zshrc $HOME/.zshrc
    buildHZSH
