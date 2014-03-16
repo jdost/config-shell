@@ -17,6 +17,7 @@ setprompt() {
    local PWD="%F{7}$($FANCY_PATH_CMD "$(dirs)")%f"
    local TTY="%F{4}%y%f"
    local EXIT="%(?..%F{0}%K{202}%?%k%f)"
+   local VI_MODE="%F{7}[%F{1}N%F{7}]"
 
    if [[ "${VIRTUAL_ENV}" != "" ]]; then
       local VENV="%F{100}($(basename ${VIRTUAL_ENV})) "
@@ -26,13 +27,19 @@ setprompt() {
 
    local PRMPT="${USER}@$HOST:${TTY}: ${PWD} ${EXIT}
 ${VENV}%F{202}»%f "
-
    PROMPT="$PRMPT"
+
+   local RPRMPT="${${KEYMAP/vicmd/$VI_MODE}/(main|viins)/}"
    if [[ "${vcs_info_msg_0_}" != "" ]]; then
-      RPROMPT="${vcs_info_msg_0_}"
+      RPROMPT="$RPRMPT ${vcs_info_msg_0_}"
    else
-      RPROMPT=""
+      RPROMPT="$RPRMPT"
    fi
+}
+
+function zle-line-init zle-keymap-select {
+   setprompt
+   zle reset-prompt
 }
 
 precmd() {
@@ -44,5 +51,8 @@ precmd() {
 preexec() {
    #print -Pn "\e]0;$1\a"
 }
+
+zle -N zle-line-init
+zle -N zle-keymap-select
 
 # vim: ft=zsh
