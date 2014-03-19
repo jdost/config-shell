@@ -1,6 +1,5 @@
 # VI mode
 bindkey -v
-export KEYTIMEOUT=1
 # Key bindings
 bindkey "${terminfo[khome]}"  beginning-of-line    # Home
 bindkey "${terminfo[kend]}"   end-of-line          # End
