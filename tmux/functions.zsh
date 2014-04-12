@@ -1,31 +1,37 @@
 export DEFAULT_TMUX=default
 export TMUX_LOCATION=/tmp/tmux/
+
+if [[ ! -d $TMUX_LOCATION ]]; then
+   mkdir $TMUX_LOCATION
+fi
+
 # alias tmux to add some better defaults {{{
 tmux () {
+   local TMUX_BIN=/usr/bin/tmux
    if [[ $# == 0 ]]; then
-      tmux $DEFAULT_TMUX
+      tmux s $DEFAULT_TMUX
       return
    fi
 
    case $1 in
       [start|new|s])
          local name=${2:-$DEFAULT_TMUX}
-          tmux -S $TMUX_LOCATION$name new-session -s $name -d
+          $TMUX_BIN -S $TMUX_LOCATION$name new-session -s $name -d
          chmod 777 $TMUX_LOCATION$name
-          tmux -S $TMUX_LOCATION$name attach -t $name
+          $TMUX_BIN -S $TMUX_LOCATION$name attach -t $name
          ;;
       [attach|a])
          local name=${2:-$DEFAULT_TMUX}
-          tmux -S $TMUX_LOCATION$name attach -t $name
+          $TMUX_BIN -S $TMUX_LOCATION$name attach -t $name
          ;;
       [detach|d])
          if [[ -z "$TMUX" ]]; then
             exit 0;
          fi
-          tmux detach
+          $TMUX_BIN detach
          ;;
       *)
-          tmux $*
+          $TMUX_BIN $*
          ;;
    esac
 } # }}}
@@ -36,7 +42,7 @@ layout () {
    if [[ -z $TMUX ]]; then
       return # open default tmux with this layout?
    fi
-    tmux source $layout
+    $TMUX_BIN source $layout
 } # }}}
 
 # tmux window naming {{{
@@ -56,10 +62,10 @@ ssh () {
    # rename
    if [[ $remote != -* ]]; then
       renamed=1
-      tmux rename-window $remote
+      $TMUX_BIN rename-window $remote
    fi
     command ssh $@
    if [[ $renamed == 1 ]]; then
-       tmux rename-window "$old_name"
+       $TMUX_BIN rename-window "$old_name"
    fi
 } # }}}
