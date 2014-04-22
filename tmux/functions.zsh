@@ -7,7 +7,7 @@ fi
 
 # alias tmux to add some better defaults {{{
 tmux () {
-   local TMUX_BIN=/usr/bin/tmux
+   local TMUX_BIN=$(bash -c "which tmux")
    if [[ $# == 0 ]]; then
       tmux s $DEFAULT_TMUX
       return
@@ -51,6 +51,7 @@ settitle () { printf "\033k$*\033\\" }
 
 # ssh+tmux naming {{{
 ssh () {
+   local TMUX_BIN=$(bash -c "which tmux")
    if [[ $# == 0 || -z $TMUX ]]; then
        command ssh -A $@
       return
