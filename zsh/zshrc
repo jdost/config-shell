@@ -46,4 +46,7 @@ if [ -f $XDG_CONFIG_HOME/zsh/colors ]; then
    . $XDG_CONFIG_HOME/zsh/colors
 fi # }}}
 
+# set initial title using TTY
+settitle $(echo $TTY | cut -d/ -f 3-)
+
 # vim: ft=zsh foldmethod=marker

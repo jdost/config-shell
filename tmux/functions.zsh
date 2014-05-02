@@ -16,12 +16,14 @@ tmux () {
    case $1 in
       [start|new|s])
          local name=${2:-$DEFAULT_TMUX}
+         settitle $name
           $TMUX_BIN -S $TMUX_LOCATION$name new-session -s $name -d
          chmod 777 $TMUX_LOCATION$name
           $TMUX_BIN -S $TMUX_LOCATION$name attach -t $name
          ;;
       [attach|a])
          local name=${2:-$DEFAULT_TMUX}
+         settitle $name
           $TMUX_BIN -S $TMUX_LOCATION$name attach -t $name
          ;;
       [detach|d])
@@ -46,7 +48,13 @@ layout () {
 } # }}}
 
 # tmux window naming {{{
-settitle () { printf "\033k$*\033\\" }
+settitle () {
+   if [[ -z "$TMUX" ]]; then
+      echo -ne "\033]0;$*\007"
+   else
+      printf "\033k$*\033\\"
+   fi
+}
 # }}}
 
 # ssh+tmux naming {{{
