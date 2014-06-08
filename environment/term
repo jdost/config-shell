@@ -40,5 +40,8 @@ alias weechat='weechat-curses -d $XDG_CONFIG_HOME/weechat'
 if command -v gpg-agent >/dev/null 2>&1 ; then
    [ -z "$GPG_AGENT_INFO" ] && eval $(gpg-agent --daemon)
 fi
+if command -v ssh-agent >/dev/null 2>&1 ; then
+   [ -z "$SSH_AUTH_SOCK" ] && eval `ssh-agent -s` && ssh-add
+fi
 
 # vim: ft=zsh:foldmethod=marker
