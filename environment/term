@@ -38,7 +38,10 @@ alias weechat='weechat-curses -d $XDG_CONFIG_HOME/weechat'
 
 # GPG-Agent startup
 if command -v gpg-agent >/dev/null 2>&1 ; then
-   [ -z "$GPG_AGENT_INFO" ] && eval $(gpg-agent --daemon)
+   if [ ! gpg-connect-agent --quiet /bye > /dev/null 2> /dev/null ]; then
+      eval $(gpg-agent --daemon)
+      export GPG_AGENT_INFO
+   fi
 fi
 if command -v ssh-agent >/dev/null 2>&1 ; then
    [ -z "$SSH_AUTH_SOCK" ] && eval `ssh-agent -s` && ssh-add
