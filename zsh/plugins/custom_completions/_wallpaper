@@ -1,0 +1,6 @@
+#compdef wallpaper
+
+ARGUMENTS=( -h --help up update add upload count)
+compadd -a ARGUMENTS
+
+# vim: ft=zsh
