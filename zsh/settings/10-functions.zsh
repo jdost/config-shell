@@ -66,4 +66,33 @@ namedir () {
    . $ZSH_SETTINGS_DIR/$ZSH_DIR_FILE
 } # }}}
 
+# Terminal color tests {{{
+color () {
+   for i; do
+      print -P -- "\033[48;5;${i}m $i \033[0m"
+   done
+} # }}}
+
+# Notify {{
+notify () {
+   case "$1" in
+      "1") local URGENCY="low"
+           shift ;;
+      "2") local URGENCY="normal"
+           shift ;;
+      "3") local URGENCY="critical"
+           shift ;;
+      *)   local URGENCY="normal"
+   esac
+
+   local NAME=$1
+   shift
+
+   if command -v notify-send >/dev/null 2>&1 ; then # has notify-send
+      notify-send -u $URGENCY -a $0 "$NAME" "$*"
+   fi
+
+   echo -e "\a"
+} # }}}
+
 # vim: ft=zsh:foldmethod=marker
