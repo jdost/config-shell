@@ -33,6 +33,9 @@ alias grep='grep --color=auto'
 alias irc='weechat'
 alias email='mutt'
 
+alias du="du -h"
+alias df="df -h"
+
 alias ncmpcpp='ncmpcpp -c $XDG_CONFIG_HOME/ncmpcpp/config'
 alias weechat='weechat-curses -d $XDG_CONFIG_HOME/weechat'
 
