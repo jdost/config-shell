@@ -6,3 +6,4 @@ export MPD_PORT=9009
 [[ $PATH != *heroku* ]] && export PATH=$PATH:/usr/local/heroku/bin
 [[ $NODE_PATH != *jsctags* ]] && export NODE_PATH=$NODE_PATH:/usr/lib/jsctags
 
+export AUR_HOME=$HOME/.local/aur

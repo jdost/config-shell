@@ -11,7 +11,7 @@ zstyle ':completion:*'                       separate-sections 'yes'
 zstyle ':completion:*'                       menu select=200
 zstyle ':completion:*'                       squeeze-slashes true
 # Include ZSH completion git repo
-FPATH=$FPATH:$PLUGIN_DIR/completions/src:$PLUGIN_DIR/haskell
+fpath=($PLUGIN_DIR/completions/src $PLUGIN_DIR/custom_completions $fpath)
 compinit -i
 # man completion
 zstyle ':completion:*:manuals'    separate-sections true
