@@ -59,7 +59,6 @@ settitle () {
 
 # ssh+tmux naming {{{
 ssh () {
-   local TMUX_BIN=$(bash -c "which tmux")
    if [[ $# == 0 || -z $TMUX ]]; then
        command ssh -A $@
       return
@@ -71,10 +70,11 @@ ssh () {
    # rename
    if [[ $remote != -* ]]; then
       renamed=1
-      $TMUX_BIN rename-window $remote
+       settitle "$remote"
    fi
     command ssh $@
    if [[ $renamed == 1 ]]; then
-       $TMUX_BIN rename-window "$old_name"
+      renamed=0
+       settitle "$old_name"
    fi
 } # }}}
