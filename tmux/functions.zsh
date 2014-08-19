@@ -49,11 +49,12 @@ layout () {
 
 # tmux window naming {{{
 settitle () {
-   name=${*:-$(echo $TTY | cut -d/ -f 3-)}
+   ALL=$*
+   TITLE=${ALL:=$(echo $TTY | cut -d/ -f 3-)}
    if [[ -z "$TMUX" ]]; then
-      echo -ne "\033]0;$name\007"
+      echo -ne "\033]0;$TITLE\007"
    else
-      printf "\033k$name\033\\"
+      printf "\033k$TITLE\033\\"
    fi
 }
 # }}}
