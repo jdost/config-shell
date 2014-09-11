@@ -1,4 +1,5 @@
-gem:        --bindir ~/.bin/ --install-dir ~/.local/gem/ruby/2.0.0/
-gempath:    ~/.local/gem/ruby/2.0.0/
+gem:        --bindir ~/.bin/
+gempath:    /home/jeff/.local/gem/
+gemhome:    /home/jeff/.local/gem/
 install:    --no-ri --no-rdoc
 update:     --no-ri --no-rdoc
