@@ -2,6 +2,9 @@
    editor = vim
    excludesfile = ~/.gitignore
 
+[user]
+   name = Jeff
+
 [push]
 	default = simple
 

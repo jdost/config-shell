@@ -1,0 +1,8 @@
+#!/bin/sh
+
+SELF=${GIT_USER:-$(git config --global user.name)}
+OTHERS=$*
+
+FULL=$(echo $SELF $OTHERS | sed "s/ /\n/g" | sort | paste -s -d"," | sed "s/,/ and /g")
+
+git config user.name "$FULL"
