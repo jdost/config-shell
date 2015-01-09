@@ -4,6 +4,8 @@ local ST="${terminfo[sgr0]}${terminfo[ritm]}"
 local FMT_BRANCH="%F{9}(%s:%F{7}%{$IT%}%r%{$ST%}%F{9}) %F{11}%B%b %K{235}%{$IT%}%m%{$ST%}%k"
 local FMT_ACTION="(%F{3}%a%f)"
 local FMT_PATH="%F{1}%R%F{2}/%S%f"
+local VI_STATUS=""
+local VI_CURSOR=0
 
 if [ -x $PLUGIN_DIR/hzsh_path ]; then
    local FANCY_PATH_CMD="$PLUGIN_DIR/hzsh_path"
@@ -17,7 +19,6 @@ setprompt() {
    local PWD="%F{7}$($FANCY_PATH_CMD "$(dirs)")%f"
    local TTY="%F{4}%y%f"
    local EXIT="%(?..%F{0}%K{202}%?%k%f)"
-   local VI_MODE="%F{7}[%F{1}N%F{7}]"
 
    if [[ "${VIRTUAL_ENV}" != "" ]]; then
       local VENV="%F{100}($(basename ${VIRTUAL_ENV})) "
@@ -29,12 +30,32 @@ setprompt() {
 ${VENV}%F{202}»%f "
    PROMPT="$PRMPT"
 
-   local RPRMPT="${${KEYMAP/vicmd/$VI_MODE}/(main|viins)/}"
+   vi-mode
+   local RPRMPT=$VI_STATUS
    if [[ "${vcs_info_msg_0_}" != "" ]]; then
       RPROMPT="$RPRMPT ${vcs_info_msg_0_}"
    else
       RPROMPT="$RPRMPT"
    fi
+}
+
+function vi-mode() {
+   local NORMAL="%F{1}N%f"
+   local INSERT="%fI"
+
+   VI_STATUS="%F{7}["
+   case $KEYMAP in
+      vicmd)
+         VI_STATUS+=$NORMAL
+         (( $CURSOR )) && #
+         ;;
+      viins|main)
+         VI_STATUS+=$INSERT
+         (( $CURSOR )) && #
+         ;;
+   esac
+
+   VI_STATUS+="%F{7}]"
 }
 
 function zle-line-init zle-keymap-select {
