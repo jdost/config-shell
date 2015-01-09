@@ -2,7 +2,15 @@
 
 SELF=${GIT_USER:-$(git config --global user.name)}
 OTHERS=$*
+TMUXERS=''
 
-FULL=$(echo $SELF $OTHERS | sed "s/ /\n/g" | sort | paste -s -d"," | sed "s/,/ and /g")
+if [[ -n "$TMUX" ]]; then
+   for pid in $(tmux list-clients | cut -d' ' -f1 | cut -d'/' -f3- | cut -d':' -f1); do
+      USER=$(ps aux | grep "$pid" | grep tmux | grep -v "grep" | awk '{print $2}' | xargs -I {} cat /proc/{}/environ | sed 's/\x0/\n/g' | grep '^HOME' | xargs -I {} bash -c "{} git config --global user.name")
+      TMUXERS="$TMUXERS $USER"
+   done
+fi
+
+FULL=$(echo $SELF $OTHERS $TMUXERS | sed "s/ /\n/g" | sort | uniq | paste -s -d"," | sed "s/,/ and /g")
 
 git config user.name "$FULL"
