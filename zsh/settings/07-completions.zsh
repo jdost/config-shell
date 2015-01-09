@@ -31,6 +31,7 @@ zstyle ':vcs_info:*' stagedstr '%F{62}S%F{237}%f'     # display ² if there are 
 zstyle ':vcs_info:*' actionformats "${FMT_BRANCH}${FMT_ACTION}" "${FMT_PATH}"
 zstyle ':vcs_info:*' formats       "${FMT_BRANCH}"              "${FMT_PATH}"
 zstyle ':vcs_info:*' nvcsformats   ""                           "%~"
+zstyle ':vcs_info:git*+set-message:*' hooks git-st
 # application specific completion
 zstyle ':completion:*' group-name            ''
  # mplayer
