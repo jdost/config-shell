@@ -80,9 +80,11 @@ run_pacman() {
    sudo pacman -Sy
    sudo pacman -S --needed zsh
    sudo pacman -S --needed tmux git ack
-   # sudo pacman -S --needed mutt weechat
+   sudo pacman -S --needed colordiff
+   sudo pacman -S --needed weechat
    # sudo pacman -S --needed mpd ncmpcpp
    # sudo pacman -S --needed irssi
+   # sudo pacman -S --needed mutt
 }
 
 build_arch() {
