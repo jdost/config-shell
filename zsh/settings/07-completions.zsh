@@ -1,3 +1,5 @@
+export COMPDUMPFILE=$XDG_CACHE_HOME/zcompdump
+
 # autocompletion look
 zstyle ':completion:*:descriptions'       format "%{$c1%}%d%{$reset_color%}"
 zstyle ':completion:*:corrections'        format "%{$c3%}%d%{$reset_color%}"

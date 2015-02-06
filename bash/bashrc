@@ -1,0 +1,7 @@
+export XDG_CACHE_HOME=$HOME/.cache
+
+export HISTFILE=$XDG_CACHE_HOME/bash_history
+
+[[ $- != *i* ]] && return
+
+PS1='[\u@\h \W]\$ '

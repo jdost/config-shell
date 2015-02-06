@@ -1,22 +1,26 @@
 # Variables
-export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python2
-export PIP_DOWNLOAD_CACHE=$XDG_CACHE_HOME/pip
 
-export ACKRC=$XDG_CONFIG_HOME/ackrc
+# PIP
+export PIP_DOWNLOAD_CACHE=$XDG_CACHE_HOME/pip
+export PIP_CONFIG_FILE=$XDG_CONFIG_HOME/pip.conf
+# VIRTUALENV
+export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python2
 export WORKON_HOME=$HOME/.local/virtualenvs
 export VIRTUALENVWRAPPER_HOOK_DIR=$HOME/.local/virtualenvs
 export VIRTUALENVWRAPPER_LOG_DIR=$HOME/.local/virtualenvs
-
+# ACK
+export ACKRC=$XDG_CONFIG_HOME/ackrc
+# NPM
 export NPM_CONFIG_USERCONFIG=$XDG_CONFIG_HOME/npmrc
-
-export PIP_CONFIG_FILE=$XDG_CONFIG_HOME/pip.conf
-
+# INPUTRC
 export INPUTRC=$XDG_CONFIG_HOME/inputrc
-
+# GPG/PASSWORD STORE
 export GNUPGHOME=$HOME/.local/gpg
 export PASSWORD_STORE_DIR=$HOME/.local/password_store
+# LESS
+export LESSHISTSIZE=0
 
-# Aliases
+# Aliases {{{
 # ls replace {{{
 if [ -f /usr/bin/vendor_perl/ls++ ] || [ -f /usr/local/bin/ls++ ]; then
    alias ls=' ls++'
@@ -37,6 +41,7 @@ alias df="df -h"
 
 alias ncmpcpp='ncmpcpp -c $XDG_CONFIG_HOME/ncmpcpp/config'
 alias weechat='weechat-curses -d $XDG_CONFIG_HOME/weechat'
+# }}}
 
 # GPG-Agent startup
 if command -v gpg-agent >/dev/null 2>&1 ; then

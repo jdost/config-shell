@@ -32,7 +32,8 @@ link() {
    linkIfNot zsh/zshrc $HOME/.zshrc
    buildHZSH
    linkIfNot inputrc/inputrc $XDG_CONFIG_HOME/inputrc
-   #linkIfNot environment/env_def $HOME/.env/def
+   linkIfNot bash/bashrc $HOME/.bashrc
+   linkIfNot user-dirs/dirs $XDG_CONFIG_HOME/user-dirs.dirs
 
    # Language package managers
    linkIfNot gem/gemrc $HOME/.gemrc
