@@ -91,7 +91,7 @@ build_arch() {
    run_pacman
    git submodule init
    git submodule update
-   mkdir -p $HOME/.bin
+   mkdir -p $HOME/.local/bin
    mkdir -p $HOME/.local/aur
    mkdir -p $HOME/.local/environment
    touch zsh/settings/10-directories.zsh
@@ -119,7 +119,7 @@ run_apt() {
 build_ubuntu() {
    run_apt
    git submodule init
-   mkdir $HOME/.bin
+   mkdir $HOME/.local/bin
    mkdir -p $HOME/.local/environment
    touch zsh/settings/10-directories.zsh
 }
