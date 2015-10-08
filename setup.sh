@@ -119,7 +119,7 @@ run_apt() {
 build_ubuntu() {
    run_apt
    git submodule init
-   mkdir $HOME/.local/bin
+   mkdir -p $HOME/.local/bin
    mkdir -p $HOME/.local/environment
    touch zsh/settings/10-directories.zsh
 }
