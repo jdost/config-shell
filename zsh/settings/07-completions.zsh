@@ -34,6 +34,9 @@ zstyle ':vcs_info:*' actionformats "${FMT_BRANCH}${FMT_ACTION}" "${FMT_PATH}"
 zstyle ':vcs_info:*' formats       "${FMT_BRANCH}"              "${FMT_PATH}"
 zstyle ':vcs_info:*' nvcsformats   ""                           "%~"
 zstyle ':vcs_info:git*+set-message:*' hooks git-st
+# sudo
+zstyle ':completion:*:sudo:*' command-path /usr/local/sbin /usr/local/bin  \
+   /usr/sbin /usr/bin /sbin /bin /usr/X11R6/bin
 # application specific completion
 zstyle ':completion:*' group-name            ''
  # mplayer
@@ -49,7 +52,7 @@ zstyle ':completion:*:*:(vim|vimdiff):*' \
   file-sort modification
 zstyle ':completion:*:*:(vim|vimdiff):*' \
   tag-order files
-  # pdf
+# pdf
 zstyle ':completion:*:*:(llpp|apvlv|zathura):*'             tag-order files
 zstyle ':completion:*:*:(llpp|apvlv|zathura):*'             file-patterns '*.pdf'
 # vim: ft=zsh tw=2

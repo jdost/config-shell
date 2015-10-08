@@ -27,13 +27,13 @@ setprompt() {
    fi
 
    local PRMPT="${USER}@$HOST:${TTY}: ${PWD} ${EXIT}
-${VENV}%F{202}»%f "
+${VENV}%(1j.%F{8}(%j%) .)%F{202}»%f "
    PROMPT="$PRMPT"
 
    vi-mode
    local RPRMPT=$VI_STATUS
    if [[ "${vcs_info_msg_0_}" != "" ]]; then
-      RPROMPT="$RPRMPT ${vcs_info_msg_0_}"
+      RPROMPT="${vcs_info_msg_0_} $RPRMPT"
    else
       RPROMPT="$RPRMPT"
    fi

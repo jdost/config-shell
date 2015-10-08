@@ -19,7 +19,7 @@ bindkey -M vicmd "??" history-beginning-search-forward
 bindkey -M vicmd "q" push-line
 bindkey -M vicmd "!" edit-command-output
 
-#
+# converts ... -> ../.. and backwards
 function rationalize_dot {
    local MATCH # keep regex match from leaking into the environment
    if [[ $LBUFFER =~ '(^|/| |      |'$'\n''|\||;|&)\.\.$' ]]; then
@@ -49,3 +49,16 @@ function unrationalize_dot {
 zle -N unrationalize_dot
 bindkey "^h" unrationalize_dot
 bindkey "^?" unrationalize_dot
+
+# lets Ctrl-Z in shell attempt to foreground
+function fancy-ctrl-z () {
+   if [[ $#BUFFER -eq 0 ]]; then
+      BUFFER="fg"
+      zle accept-line
+   else
+      zle push-input
+      zle clear-screen
+   fi
+}
+zle -N fancy-ctrl-z
+bindkey '^Z' fancy-ctrl-z
