@@ -14,19 +14,19 @@ tmux () {
    fi
 
    case $1 in
-      [start|new|s])
+      start|new|s)
          local name=${2:-$DEFAULT_TMUX}
          settitle $name
           $TMUX_BIN -S $TMUX_LOCATION$name new-session -s $name -d
          chmod 777 $TMUX_LOCATION$name
           $TMUX_BIN -S $TMUX_LOCATION$name attach -t $name
          ;;
-      [attach|a])
+      attach|a)
          local name=${2:-$DEFAULT_TMUX}
          settitle $name
           $TMUX_BIN -S $TMUX_LOCATION$name attach -t $name
          ;;
-      [detach|d])
+      detach|d)
          if [[ -z "$TMUX" ]]; then
             exit 0;
          fi
