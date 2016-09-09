@@ -1,4 +1,4 @@
-reload () { source $ZSHRC }
+reload () { source $ZSHRC; clear }
 function '#' () { }
 
 # most used commands {{{

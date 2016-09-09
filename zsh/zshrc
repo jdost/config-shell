@@ -48,5 +48,6 @@ fi # }}}
 
 # set initial title using TTY
 settitle
+term_info
 
 # vim: ft=zsh foldmethod=marker

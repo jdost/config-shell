@@ -41,6 +41,8 @@ tmux () {
 # quickly switch to tmux layouts {{{
 layout () {
    local layout=$XDG_CONFIG_HOME/tmux/${1:-default}
+   local TMUX_BIN=$(bash -c "which tmux")
+
    if [[ -z $TMUX ]]; then
       return # open default tmux with this layout?
    fi
@@ -51,6 +53,7 @@ layout () {
 settitle () {
    ALL=$*
    TITLE=${ALL:=$(echo $TTY | cut -d/ -f 3-)}
+
    if [[ -z "$TMUX" ]]; then
       echo -ne "\033]0;$TITLE\007"
    else

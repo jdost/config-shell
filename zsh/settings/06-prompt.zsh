@@ -18,7 +18,8 @@ setprompt() {
    local HOST="%F{2}%U%M%u%f"
    local PWD="%F{7}$($FANCY_PATH_CMD "$(dirs)")%f"
    local TTY="%F{4}%y%f"
-   local EXIT="%(?..%F{0}%K{202}%?%k%f)"
+   local EXIT="%(?..%F{0}%K{202}%?%k%f )"
+   local JOBS="%(1j.%F{8}(%j%) .)"
 
    if [[ "${VIRTUAL_ENV}" != "" ]]; then
       local VENV="%F{100}($(basename ${VIRTUAL_ENV})) "
@@ -26,8 +27,8 @@ setprompt() {
       local VENV=""
    fi
 
-   local PRMPT="${USER}@$HOST:${TTY}: ${PWD} ${EXIT}
-${VENV}%(1j.%F{8}(%j%) .)%F{202}»%f "
+   local PRMPT="${USER}@$HOST:${TTY}: ${PWD}
+${VENV}${JOBS}${EXIT}%(1l.. )%F{202}»%f "
    PROMPT="$PRMPT"
 
    vi-mode
@@ -71,6 +72,11 @@ precmd() {
 
 preexec() {
    #print -Pn "\e]0;$1\a"
+}
+
+# Ensure that the prompt is redrawn when the terminal size changes.
+TRAPWINCH() {
+   zle && { zle reset-prompt; zle -R }
 }
 
 zle -N zle-line-init

@@ -19,8 +19,11 @@ bindkey -M vicmd "??" history-beginning-search-forward
 bindkey -M vicmd "q" push-line
 bindkey -M vicmd "!" edit-command-output
 
+autoload -Uz edit-command-line
+bindkey -M vicmd 'v' edit-command-line
+
 # converts ... -> ../.. and backwards
-function rationalize_dot {
+function rationalize_dot () {
    local MATCH # keep regex match from leaking into the environment
    if [[ $LBUFFER =~ '(^|/| |      |'$'\n''|\||;|&)\.\.$' ]]; then
       LBUFFER+=/
@@ -34,7 +37,7 @@ zle -N rationalize_dot
 bindkey . rationalize_dot
 bindkey -M isearch . self-insert
 
-function unrationalize_dot {
+function unrationalize_dot () {
    local MATCH # keep regex match from leaking into the environment
    if [[ $LBUFFER =~ '(^|/| |      |'$'\n''|\||;|&)\.\.$' ]]; then
       zle backward-delete-char
@@ -62,3 +65,15 @@ function fancy-ctrl-z () {
 }
 zle -N fancy-ctrl-z
 bindkey '^Z' fancy-ctrl-z
+
+function sudo-command-line () {
+   [[ -z $BUFFER ]] && zle up-history
+   if [[ $BUFFER == sudo\ * ]]; then
+      LBUFFER="${LBUFFER#sudo }"
+   else
+      LBUFFER="sudo $LBUFFER"
+   fi
+}
+zle -N sudo-command-line
+# Defined shortcut keys: [Esc] [Esc]
+bindkey -M viins "\e\e" sudo-command-line

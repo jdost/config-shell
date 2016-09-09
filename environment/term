@@ -41,17 +41,24 @@ alias df="df -h"
 
 alias ncmpcpp='ncmpcpp -c $XDG_CONFIG_HOME/ncmpcpp/config'
 alias weechat='weechat-curses -d $XDG_CONFIG_HOME/weechat'
+
+alias ping='ping -c 5'
+alias clear='clear;term_info'
 # }}}
 
-# GPG-Agent startup
+# GPG-Agent startup {{{
 if command -v gpg-agent >/dev/null 2>&1 ; then
    if [ ! gpg-connect-agent --quiet /bye > /dev/null 2> /dev/null ]; then
-      eval $(gpg-agent --daemon)
+      local GPG_AGENT_ENV=$GNUPGHOME/gpg-agent.env
+      eval $(gpg-agent --daemon --quiet --write-env-file $GPG_AGENT_ENV)
+      chmod 600 $GPG_AGENT_ENV
       export GPG_AGENT_INFO
    fi
-fi
+fi # }}}
+
+# SSH-Agent startup {{{
 if command -v ssh-agent >/dev/null 2>&1 ; then
    [ -z "$SSH_AUTH_SOCK" ] && eval `ssh-agent -s` && ssh-add
-fi
+fi # }}}
 
 # vim: ft=zsh:foldmethod=marker
