@@ -20,7 +20,7 @@ linkIfNot() {
 
 buildHZSH() {
    if command -v ghc >/dev/null 2>&1 ; then # has ghc
-      ghc zsh/plugins/hzsh_path.src/zsh_path.hs -o zsh/plugins/hzsh_path
+      ghc -dynamic zsh/plugins/hzsh_path.src/zsh_path.hs -o zsh/plugins/hzsh_path
    fi
 }
 

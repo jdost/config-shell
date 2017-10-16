@@ -2,6 +2,7 @@
 *.py[co]
 *.hi
 *.o
+*.egg-info
 
 # Stage files
 *.back
@@ -11,7 +12,18 @@
 *.orig
 *.swp
 *~
+*.patch
 
 # VirtualEnv project pointer
 .venv
 .vagrant
+
+# Local secrets
+*.secret
+
+# reddit specific
+*_thrift
+*.test
+.coverage
+build/*
+dist/*
