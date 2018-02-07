@@ -1,0 +1,83 @@
+#!/bin/bash
+
+########
+# > git fork <github user>/<repo> [<folder name>]
+#
+# A pure shell script that calls to the GitHub API to attempt for fork a repository
+# and then clone it down when it has finished and set the base repository as an
+# upstream remote.
+#
+# Requires: curl, jq
+#
+# Will prompt for a GitHub token, this is just an OAuth token that will be passed
+# in the headers to authenticate requests.
+########
+
+# arguments
+USER=$(echo $1 | cut -d'/' -f1)
+REPO=$(echo $1 | cut -d'/' -f2-)
+FOLDER_NAME=${2:-REPO}
+# loop configuration, basically max wait after a fork is LOOP_LIMIT*SLEEP_TIME
+SLEEP_TIME=1s
+LOOP_LIMIT=20
+# get the OAuth token
+echo -n "GitHub Token: "
+read -s GITHUB_TOKEN
+echo ""
+
+ghcurl(){  # wrap github curl calls
+   local METHOD=${2:-GET}
+   local URL=$1
+   # don't prefix if it already exists
+   if [[ -z "$(echo $URL | grep 'api.github.com')" ]]; then
+      URL="https://api.github.com/$URL"
+   fi
+
+   curl -s -X "$METHOD" -H "Authorization: token $GITHUB_TOKEN" "$URL"
+}
+
+find_repo(){  # wrap the owned repository discovery logic
+   ghcurl "user/repos?sort=created&type=owner" | jq -r ".[] | select(.name == \"$REPO\")"
+}
+
+if [[ -d "$FOLDER_NAME" ]]; then  # if the folder already exists, just bail out
+   echo "You already have $USER/$REPO cloned down..."
+   exit 0
+fi
+
+# on first GitHub call, error out if it failed, this is probably a bad token
+if OWNED_REPO=$(find_repo); then
+   # nothing, it worked
+else
+   echo "The GitHub request failed."
+fi
+REPO_DATA=$(ghcurl "repos/$USER/$REPO")  # grab the upstream data
+
+if [[ -z "$OWNED_REPO" ]]; then  # if there was no repository, fork it
+   echo "Forking $USER/$REPO..."
+
+   FORK_URL=$(echo $REPO_DATA | jq -r ".forks_url")
+   ghcurl "$FORK_URL" "POST" > /dev/null  # don't care about the response
+
+   LOOP_COUNT=0  # loops checking if the repository is reported for the user
+   while [[ -z "$OWNED_REPO" ]]; do
+      OWNED_REPO=$(find_repo)
+      LOOP_COUNT+=1  # keep a count to ensure it doesn't loop forever
+      if (( "$LOOP_COUNT" > "$LOOP_LIMIT" )); then
+         echo "Retry count limit reached: $LOOP_LIMIT"
+         exit 1
+      fi
+
+      sleep $SLEEP_TIME  # sleep per loop
+   done
+else
+   echo "Already forked, cloning..."
+fi
+
+# After the clone down, there will be two remotes
+ORIGIN_SSH=$(echo $OWNED_REPO | jq -r ".ssh_url")  # origin will be the forked repo
+UPSTREAM_SSH=$(echo $REPO_DATA | jq -r ".ssh_url")  # upstream will be the original
+
+git clone $ORIGIN_SSH $FOLDER_NAME
+cd $FOLDER_NAME
+git remote add upstream $UPSTREAM_SSH
