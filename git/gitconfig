@@ -7,7 +7,7 @@
    email = jeff
 
 [push]
-   default = simple
+   default = current
 
 [alias]
    st = status -s

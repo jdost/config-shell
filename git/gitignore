@@ -20,6 +20,8 @@
 
 # Local secrets
 *.secret
+.den.ini
+.*.md
 
 # reddit specific
 *_thrift

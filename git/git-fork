@@ -16,7 +16,7 @@
 # arguments
 USER=$(echo $1 | cut -d'/' -f1)
 REPO=$(echo $1 | cut -d'/' -f2-)
-FOLDER_NAME=${2:-REPO}
+FOLDER_NAME=${2:-$REPO}
 # loop configuration, basically max wait after a fork is LOOP_LIMIT*SLEEP_TIME
 SLEEP_TIME=1s
 LOOP_LIMIT=20
@@ -47,7 +47,7 @@ fi
 
 # on first GitHub call, error out if it failed, this is probably a bad token
 if OWNED_REPO=$(find_repo); then
-   # nothing, it worked
+   : # nothing, it worked
 else
    echo "The GitHub request failed."
 fi
