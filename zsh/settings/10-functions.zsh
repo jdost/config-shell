@@ -73,7 +73,7 @@ color () {
    done
 } # }}}
 
-# Notify {{
+# Notify {{{
 notify () {
    case "$1" in
       "1") local URGENCY="low"
@@ -93,6 +93,23 @@ notify () {
    fi
 
    echo -e "\a"
+} # }}}
+
+# Docker {{{
+docker () {
+   local DOCKER_BIN=$(command which docker)
+
+   case $1 in
+      "clean")
+         $DOCKER_BIN images | grep "<none>" | awk '{ print $$3 }' | xargs $DOCKER_BIN rmi
+         ;;
+      "stop-all")
+         $DOCKER_BIN ps | grep -v "CONTAINER" | awk '{ print $$1 }' | xargs $DOCKER_BIN stop
+         ;;
+      *)
+         $DOCKER_BIN $*
+         ;;
+   esac
 } # }}}
 
 # vim: ft=zsh:foldmethod=marker

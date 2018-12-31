@@ -23,9 +23,5 @@
 .den.ini
 .*.md
 
-# reddit specific
-*_thrift
-*.test
-.coverage
-build/*
-dist/*
+# Rust/Cargo artifacts
+target/

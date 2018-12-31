@@ -42,8 +42,10 @@ link() {
 
    # Apps
    mkdir -p $HOME/.local/gpg
+   chmod 700 $HOME/.local/gpg
    linkIfNot gpg/gpg.conf $HOME/.local/gpg/gpg.conf
    linkIfNot gpg/gpg-agent.conf $HOME/.local/gpg/gpg-agent.conf
+   linkIfNot gpg/scdaemon.conf $HOME/.local/gpg/scdaemon.conf
    linkIfNot screen/screenrc $HOME/.screenrc
    linkIfNot tmux/tmux.conf $HOME/.tmux.conf
    linkIfNot tmux/functions.zsh $XDG_CONFIG_HOME/zsh/settings/20-tmux.zsh
@@ -137,6 +139,7 @@ if [ -z "${1}" ]; then
    echo "    init    -- installs associated programs and creates all symlinks"
    echo "    update  -- updates packages associated with repo, creates any new symlinks"
    echo "    link    -- create symlinks for files (will not overwrite existing files"
+   echo "    build   -- rebuild the haskell pretty directory printer"
    echo ""
    exit 1
 fi
@@ -153,5 +156,8 @@ case "${1}" in
       ;;
    'link')
       link
+      ;;
+   'build')
+      buildHZSH
       ;;
 esac

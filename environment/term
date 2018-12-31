@@ -50,15 +50,22 @@ alias clear='clear;term_info'
 if command -v gpg-agent >/dev/null 2>&1 ; then
    if [ ! gpg-connect-agent --quiet /bye > /dev/null 2> /dev/null ]; then
       local GPG_AGENT_ENV=$GNUPGHOME/gpg-agent.env
-      eval $(gpg-agent --daemon --quiet --write-env-file $GPG_AGENT_ENV)
+      eval $(gpg-agent --daemon --enable-ssh-support --quiet --write-env-file $GPG_AGENT_ENV)
       chmod 600 $GPG_AGENT_ENV
       export GPG_AGENT_INFO
    fi
 fi # }}}
 
 # SSH-Agent startup {{{
-if command -v ssh-agent >/dev/null 2>&1 ; then
-   [ -z "$SSH_AUTH_SOCK" ] && eval `ssh-agent -s` && ssh-add
+if [ -z "$SSH_AUTH_SOCK" ]; then
+   #export SSH_AUTH_SOCK="${XDG_RUNTIME_DIR}/gnupg/S.gpg-agent.ssh"
+   export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
+   gpgconf --launch gpg-agent
+   export GPG_TTY=$(tty)
+   gpg-connect-agent updatestartuptty /bye > /dev/null
+else
+   export GPG_TTY=$(tty)
+   gpg-connect-agent updatestartuptty /bye > /dev/null
 fi # }}}
 
 # vim: ft=zsh:foldmethod=marker
