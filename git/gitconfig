@@ -4,7 +4,7 @@
 
 [user]
    name = Jeff
-   email = jeff
+   email = jdost@users.noreply.github.com
 
 [push]
    default = current

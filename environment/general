@@ -1,9 +1,5 @@
-export MPD_HOST=localhost
-export MPD_PORT=9009
-
 [[ $PATH != *$HOME/.local/bin* ]] && export PATH=~/.local/bin:$PATH
-[[ $PATH != *.cabal* ]] && export PATH=$PATH:~/.cabal/bin
-[[ $PATH != *heroku* ]] && export PATH=$PATH:/usr/local/heroku/bin
-[[ $NODE_PATH != *jsctags* ]] && export NODE_PATH=$NODE_PATH:/usr/lib/jsctags
+[[ ! -d $HOME/.local/bin ]] && mkdir -p $HOME/.local/bin
 
 export AUR_HOME=$HOME/.local/aur
+[[ ! -d "$AUR_HOME" ]] && mkdir -p $AUR_HOME
