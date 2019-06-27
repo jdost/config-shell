@@ -1,0 +1,6 @@
+#compdef den
+
+ARGUMENTS=( -h --help -v --verbose -d --debug alias config create delete list start stop version )
+compadd -a ARGUMENTS
+
+# vim: ft=zsh
