@@ -1,101 +1,101 @@
 #/bin/sh
 
-if [ -z "$XDG_CONFIG_HOME" ]; then
-   export XDG_CONFIG_HOME=$HOME/.config
-fi
+set -euo pipefail
+
+# Ensure this path is set
+export XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-$HOME/.config}
 
 ####################################################################################
 # Linking {{{
 linkIfNot() {
-   if [ -e $1 ]; then
-      if [ ! -e $2 ]; then
-         echo "Linking " $1
-         ln -s $PWD/$1 $2
-      fi
-   elif [ ! -e $2 ]; then
-      echo "Linking " $1
-      ln -s $PWD/$1 $2
+   [[ -e $2 ]] && return
+
+   if [[ ! -d "$(dirname $2)" ]]; then
+      echo "Creating directory: $(dirname $2)"
+      mkdir -p "$(dirname $2)"
    fi
+
+   echo "Linking " $1
+   ln -s $PWD/$1 $2
+}
+
+installed() {
+   pacman -Q "$1"
 }
 
 buildHZSH() {
-   if command -v ghc >/dev/null 2>&1 ; then # has ghc
+   if installed ghc; then
       ghc -dynamic zsh/plugins/hzsh_path.src/zsh_path.hs -o zsh/plugins/hzsh_path
+   else
+      echo "ERROR: please install 'ghc'..."
    fi
 }
 
 link() {
-   # Shell/Environment
+   # General session environment settings
    linkIfNot environment/term $HOME/.local/environment/term
    linkIfNot environment/general $HOME/.local/environment/general
-   linkIfNot zsh $XDG_CONFIG_HOME/zsh
-   linkIfNot zsh/zshrc $HOME/.zshrc
-   buildHZSH
+   linkIfNot user-dirs/dirs $XDG_CONFIG_HOME/user-dirs.dirs
+   # zsh specific things
+   if installed "zsh"; then
+      linkIfNot zsh $XDG_CONFIG_HOME/zsh
+      linkIfNot zsh/zshrc $HOME/.zshrc
+      buildHZSH
+   fi
+   # bash
    linkIfNot inputrc/inputrc $XDG_CONFIG_HOME/inputrc
    linkIfNot bash/bashrc $HOME/.bashrc
-   linkIfNot user-dirs/dirs $XDG_CONFIG_HOME/user-dirs.dirs
-
    # Language package managers
    linkIfNot gem/gemrc $HOME/.gemrc
    linkIfNot npm/npmrc $XDG_CONFIG_HOME/npmrc
    linkIfNot pip/pip.conf $XDG_CONFIG_HOME/pip.conf
 
    # Apps
-   mkdir -p $HOME/.local/gpg
-   chmod 700 $HOME/.local/gpg
-   linkIfNot gpg/gpg.conf $HOME/.local/gpg/gpg.conf
-   linkIfNot gpg/gpg-agent.conf $HOME/.local/gpg/gpg-agent.conf
-   linkIfNot gpg/scdaemon.conf $HOME/.local/gpg/scdaemon.conf
-   linkIfNot screen/screenrc $HOME/.screenrc
-   linkIfNot tmux/tmux.conf $HOME/.tmux.conf
-   linkIfNot tmux/functions.zsh $XDG_CONFIG_HOME/zsh/settings/20-tmux.zsh
-   linkIfNot tmux/layouts $XDG_CONFIG_HOME/tmux
-   if [[ "$(git --version)" > "git version 1.8.0" ]]; then
-      mkdir -p $XDG_CONFIG_HOME/git
-      linkIfNot git/gitconfig $XDG_CONFIG_HOME/git/config
-   else
-      linkIfNot git/gitconfig $HOME/.gitconfig
+   if installed "gnupg"; then
+      linkIfNot gpg/gpg.conf $HOME/.local/gpg/gpg.conf
+      linkIfNot gpg/gpg-agent.conf $HOME/.local/gpg/gpg-agent.conf
+      linkIfNot gpg/scdaemon.conf $HOME/.local/gpg/scdaemon.conf
+      chmod 700 $HOME/.local/gpg
    fi
-   linkIfNot git/gitignore $HOME/.gitignore
-   linkIfNot ack/ackrc $XDG_CONFIG_HOME/ackrc
-   linkIfNot mutt $HOME/.mutt
-
-   linkIfNot weechat $XDG_CONFIG_HOME/weechat
-   #linkIfNot irssi $HOME/.irssi
-   linkIfNot ncmpcpp $XDG_CONFIG_HOME/ncmpcpp
+   #linkIfNot screen/screenrc $HOME/.screenrc
+   if installed "tmux"; then
+      linkIfNot tmux/tmux.conf $HOME/.tmux.conf
+      linkIfNot tmux/functions.zsh $XDG_CONFIG_HOME/zsh/settings/20-tmux.zsh
+      linkIfNot tmux/layouts $XDG_CONFIG_HOME/tmux
+   fi
+   if installed "git"; then
+      if [[ "$(git --version)" > "git version 1.8.0" ]]; then
+         mkdir -p $XDG_CONFIG_HOME/git
+         linkIfNot git/gitconfig $XDG_CONFIG_HOME/git/config
+      else
+         linkIfNot git/gitconfig $HOME/.gitconfig
+      fi
+      linkIfNot git/gitignore $HOME/.gitignore
+   fi
+   installed "ack" && linkIfNot ack/ackrc $XDG_CONFIG_HOME/ackrc
+   installed "mutt" && linkIfNot mutt $HOME/.mutt
+   installed "weechat" && linkIfNot weechat $XDG_CONFIG_HOME/weechat
+   installed "irssi" && linkIfNot irssi $HOME/.irssi
+   installed "ncmpcpp" && linkIfNot ncmpcpp $XDG_CONFIG_HOME/ncmpcpp
 } # }}}
 ####################################################################################
 # Install - Arch {{{
-aurGet() {
-   local END_DIR=$PWD
-   cd $HOME/.local/aur/
-   ABBR=${1:0:2}
-   wget http://aur.archlinux.org/packages/$ABBR/$1/$1.tar.gz
-   tar -xf "$1.tar.gz"
-   rm "$1.tar.gz"
-   cd "$1"
-   makepkg -si
-   cd $END_DIR
-}
-
 run_pacman() {
    sudo pacman -Sy
-   sudo pacman -S --needed zsh
-   sudo pacman -S --needed tmux git ack
-   sudo pacman -S --needed colordiff
-   sudo pacman -S --needed weechat
-   # sudo pacman -S --needed mpd ncmpcpp
-   # sudo pacman -S --needed irssi
-   # sudo pacman -S --needed mutt
+   sudo pacman -S --needed \
+      tmux zsh \
+      ack colordiff exa git \
+      weechat \
+      ncmpcpp
 }
 
 build_arch() {
    run_pacman
    git submodule init
    git submodule update
-   mkdir -p $HOME/.local/bin
-   mkdir -p $HOME/.local/aur
-   mkdir -p $HOME/.local/environment
+   for dir in $LOCAL_DIRS; do
+      mkdir -p $HOME/.local/$dir
+   done
    touch zsh/settings/10-directories.zsh
 }
 
@@ -104,32 +104,6 @@ update_arch() {
    git submodule -q foreach git pull -q origin master
    run_pacman
    link
-} # }}}
-####################################################################################
-# Install - Ubuntu {{{
-run_apt() {
-   sudo apt-get update
-   sudo apt-get upgrade
-
-   sudo apt-get install zsh
-   sudo apt-get install tmux git ack
-   # sudo apt-get install mutt weechat
-   # sudo apt-get install mpd ncmpcpp
-   # sudo apt-get install irssi
-}
-
-build_ubuntu() {
-   run_apt
-   git submodule init
-   mkdir -p $HOME/.local/bin
-   mkdir -p $HOME/.local/environment
-   touch zsh/settings/10-directories.zsh
-}
-
-update_ubuntu() {
-   git pull
-   git submodule -q foreach git pull -q origin master
-   run_apt
 } # }}}
 ####################################################################################
 
@@ -143,15 +117,14 @@ if [ -z "${1}" ]; then
    echo ""
    exit 1
 fi
-case "${1}" in
+
+case "${1:-init}" in
    'init')
-      command -v pacman >/dev/null 2>&1  && build_arch
-      command -v apt-get >/dev/null 2>&1 && build_ubuntu
+      build_arch
       link
       ;;
    'update')
-      command -v pacman >/dev/null 2>&1  && update_arch
-      command -v apt-get >/dev/null 2>&1 && update_ubuntu
+      update_arch
       link
       ;;
    'link')

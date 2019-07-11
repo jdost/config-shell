@@ -1,9 +1,3 @@
-# Compiled files
-*.py[co]
-*.hi
-*.o
-*.egg-info
-
 # Stage files
 *.back
 *.bak
@@ -14,14 +8,22 @@
 *~
 *.patch
 
-# VirtualEnv project pointer
+# Python
+*.py[co]
+*.egg-info
 .venv
-.vagrant
+env
+venv
 
 # Local secrets
+.vagrant
 *.secret
 .den.ini
 .*.md
+
+# Compiled files
+*.hi
+*.o
 
 # Rust/Cargo artifacts
 target/
