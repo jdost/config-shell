@@ -87,6 +87,9 @@ run_pacman() {
       ack colordiff exa git \
       weechat \
       ncmpcpp
+   sudo pacman -S --needed \
+      openssh pcsclite ccid
+   sudo systemctl enable --now pcsclite.service
 }
 
 build_arch() {
