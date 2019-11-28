@@ -32,6 +32,9 @@ tmux () {
          fi
           $TMUX_BIN detach
          ;;
+      ls)
+         /usr/bin/ls $TMUX_LOCATION
+         ;;
       *)
           $TMUX_BIN $*
          ;;

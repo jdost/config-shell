@@ -2,13 +2,27 @@
 
 set -euo pipefail
 
-# Ensure this path is set
-export XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-$HOME/.config}
+# This may not be defined as this is the linking script that sets up the userdirs
+export XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-'$HOME/.config'}
+
+show_help() {
+   cat <<-HELP
+Setup script for terminal configs
+
+USAGE: ${0} [command]
+
+commands:
+   init    -- Initialize system with expected packages and linked configs
+   update  -- Updates state of local repo and fixes missing links
+   link    -- Create missing links not already defined
+   build   -- Rebuild any local compile binaries
+HELP
+}
 
 ####################################################################################
-# Linking {{{
+# Helpers {{{
 linkIfNot() {
-   [[ -e $2 ]] && return
+   [[ -e "$2" ]] && return
 
    if [[ ! -d "$(dirname $2)" ]]; then
       echo "Creating directory: $(dirname $2)"
@@ -23,12 +37,15 @@ installed() {
    pacman -Q "$1"
 }
 
+
 buildHZSH() {
-   if installed ghc; then
-      ghc -dynamic zsh/plugins/hzsh_path.src/zsh_path.hs -o zsh/plugins/hzsh_path
-   else
+   if !which ghc &>/dev/null ; then  # ghc is not defined, don't build it
       echo "ERROR: please install 'ghc'..."
+      return
    fi
+   ghc \
+      -dynamic zsh/plugins/hzsh_path.src/zsh_path.hs \
+      -o zsh/plugins/hzsh_path
 }
 
 link() {
@@ -46,12 +63,13 @@ link() {
    linkIfNot inputrc/inputrc $XDG_CONFIG_HOME/inputrc
    linkIfNot bash/bashrc $HOME/.bashrc
    # Language package managers
-   linkIfNot gem/gemrc $HOME/.gemrc
-   linkIfNot npm/npmrc $XDG_CONFIG_HOME/npmrc
+   #linkIfNot gem/gemrc $HOME/.gemrc
+   #linkIfNot npm/npmrc $XDG_CONFIG_HOME/npmrc
    linkIfNot pip/pip.conf $XDG_CONFIG_HOME/pip.conf
 
    # Apps
    if installed "gnupg"; then
+      mkdir -p $HOME/.local/gpg
       linkIfNot gpg/gpg.conf $HOME/.local/gpg/gpg.conf
       linkIfNot gpg/gpg-agent.conf $HOME/.local/gpg/gpg-agent.conf
       linkIfNot gpg/scdaemon.conf $HOME/.local/gpg/scdaemon.conf
@@ -71,6 +89,8 @@ link() {
          linkIfNot git/gitconfig $HOME/.gitconfig
       fi
       linkIfNot git/gitignore $HOME/.gitignore
+      mkdir -p $HOME/.local/bin
+      linkIfNot git/wrapper.sh $HOME/.local/bin/git
    fi
    installed "ack" && linkIfNot ack/ackrc $XDG_CONFIG_HOME/ackrc
    installed "mutt" && linkIfNot mutt $HOME/.mutt
@@ -79,8 +99,8 @@ link() {
    installed "ncmpcpp" && linkIfNot ncmpcpp $XDG_CONFIG_HOME/ncmpcpp
 } # }}}
 ####################################################################################
-# Install - Arch {{{
-run_pacman() {
+# Actions {{{
+install() {
    sudo pacman -Sy
    sudo pacman -S --needed \
       tmux zsh \
@@ -92,48 +112,41 @@ run_pacman() {
    sudo systemctl enable --now pcsclite.service
 }
 
-build_arch() {
-   run_pacman
+initialize() {
    git submodule init
    git submodule update
-   for dir in $LOCAL_DIRS; do
+   local localdirs=('aur' 'bin' 'environment')
+   for dir in $localdirs; do
       mkdir -p $HOME/.local/$dir
    done
    touch zsh/settings/10-directories.zsh
 }
 
-update_arch() {
+update() {
    git pull
    git submodule -q foreach git pull -q origin master
-   run_pacman
-   link
 } # }}}
 ####################################################################################
 
-if [ -z "${1}" ]; then
-   echo "Missing action. Syntax: ${0} [command]"
-   echo "  Options:"
-   echo "    init    -- installs associated programs and creates all symlinks"
-   echo "    update  -- updates packages associated with repo, creates any new symlinks"
-   echo "    link    -- create symlinks for files (will not overwrite existing files"
-   echo "    build   -- rebuild the haskell pretty directory printer"
-   echo ""
-   exit 1
-fi
-
-case "${1:-init}" in
+case "${1:-''}" in
    'init')
-      build_arch
+      install
+      initialize
       link
       ;;
    'update')
-      update_arch
-      link
-      ;;
-   'link')
+      install
+      update
       link
       ;;
    'build')
       buildHZSH
+      ;;
+   'link')
+      link
+      ;;
+   *)
+      show_help
+      exit
       ;;
 esac

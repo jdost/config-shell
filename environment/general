@@ -1,5 +1,6 @@
-[[ $PATH != *$HOME/.local/bin* ]] && export PATH=~/.local/bin:$PATH
+[[ $PATH != *$HOME/.local/bin* ]] && export PATH=$HOME/.local/bin:$PATH
 [[ ! -d $HOME/.local/bin ]] && mkdir -p $HOME/.local/bin
 
 export AUR_HOME=$HOME/.local/aur
 [[ ! -d "$AUR_HOME" ]] && mkdir -p $AUR_HOME
+# vim: ft=zsh:foldmethod=marker

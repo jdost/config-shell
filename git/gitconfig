@@ -13,22 +13,11 @@
    st = status -s
    co = checkout
    lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%C(bold blue)<%an>%Creset' --abbrev-commit
-   in = !git remote update -p; log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%C(bold blue)<%an>%Creset' --abbrev-commit ..@{u}
-   out = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%C(bold blue)<%an>%Creset' --abbrev-commit @{u}..
-   subup = submodule -q foreach git pull -q origin master
    serve = !git daemon --reuseaddr --verbose --base-path=. --export-all ./.git
    churn = !git --no-pager log --name-only --oneline | grep -v ' ' | sort | uniq -c | sort -nr | head
-   rs = checkout HEAD
-   find = !git ls-files | grep -i
    last = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat -1
-   assume = update-index --assume-unchanged
-   unassume = update-index --no-assume-unchanged
-   assumed = !git ls-files -v | grep ^h | cut -c 3-
-   la = !git config -l | grep alias | cut -c 7- | sort
    staged = diff --staged
-   rollback = checkout .
    amend = commit --amend --no-edit
-   mrg = merge --no-ff
    merged = !git branch --merged master | grep -v " master"
 
 [color]

@@ -4,9 +4,5 @@ hzsh_path
 
 zsh/settings/10-directories.zsh
 zsh/settings/20-tmux.zsh
-weechat/irc.conf
-weechat/sec.conf
-weechat/weechat.conf
-weechat/*.log
-weechat/script/*
-mutt/mailboxes
+weechat/*
+mutt/*
