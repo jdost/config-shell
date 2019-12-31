@@ -78,7 +78,6 @@ link() {
    #linkIfNot screen/screenrc $HOME/.screenrc
    if installed "tmux"; then
       linkIfNot tmux/tmux.conf $HOME/.tmux.conf
-      linkIfNot tmux/functions.zsh $XDG_CONFIG_HOME/zsh/settings/20-tmux.zsh
       linkIfNot tmux/layouts $XDG_CONFIG_HOME/tmux
    fi
    if installed "git"; then

@@ -9,13 +9,11 @@ zmodload zsh/complist
 zmodload zsh/terminfo
 
 # Environment Vars {{{
-export XDG_CONFIG_HOME=$HOME/.config
-export XDG_CACHE_HOME=$HOME/.cache
+export XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-$HOME/.config}
+export XDG_CACHE_HOME=${XDG_CACHE_HOME:-$HOME/.cache}
 
 for r in $HOME/.local/environment/*; do
-   if [[ $DEBUG > 0 ]]; then
-      echo "zsh: sourcing $r"
-   fi
+   [[ $DEBUG > 0 ]] && echo "zsh: sourcing $r"
    source $r
 done # }}}
 # Lines configured by zsh-newuser-install
@@ -36,9 +34,7 @@ setopt prompt_subst
 
 # Load settings {{{
 for r in $ZSH_SETTINGS_DIR/*.zsh; do
-   if [[ $DEBUG > 0 ]]; then
-      echo "zsh: sourcing $r"
-   fi
+   [[ $DEBUG > 0 ]] && echo "zsh: sourcing $r"
    source $r
 done # }}}
 # set shell colors {{{
@@ -46,8 +42,10 @@ if [ -f $XDG_CONFIG_HOME/zsh/colors ]; then
    . $XDG_CONFIG_HOME/zsh/colors
 fi # }}}
 
-# set initial title using TTY
-settitle
-term_info
+# set initial title using TTY, only if interactive
+if [[ -o interactive ]]; then
+   which settitle &>/dev/null && settitle
+   which term_info &>/dev/null && term_info
+fi
 
 # vim: ft=zsh foldmethod=marker

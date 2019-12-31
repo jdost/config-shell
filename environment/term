@@ -18,46 +18,40 @@ export PASSWORD_STORE_DIR=$HOME/.local/password_store
 # LESS
 export LESSHISTSIZE=0
 # GREP
-if [[ -e "$(which rg 2>/dev/null)" ]]; then
+if which rg &>/dev/null; then
    # replace grep with ripgrep if installed
    alias grep='rg'
 else
    alias grep='grep --color=auto'
 fi
 # LS
-if [[ -e "$(which exa 2>/dev/null)" ]]; then
+if which exa &>/dev/null; then
    # replace ls with exa if installed
    alias ls=' exa -l'
 else
    alias ls='ls -F'
 fi
 # DIFF
-if [[ -e "$(which colordiff 2>/dev/null)" ]]; then
-   # replace diff with colordiff if installed
-   alias diff='colordiff'
-fi
+which colordiff &>/dev/null && alias diff='colordiff'
 # WEECHAT
-if [[ -e "$(which weechat 2>/dev/null)" ]]; then
+if which weechat &>/dev/null; then
    alias weechat='weechat-curses -d $XDG_CONFIG_HOME/weechat'
    alias irc='weechat'
 fi
 # MPD
-if [[ -e "$(which ncmpcpp 2>/dev/null)" ]]; then
-   alias ncmpcpp='ncmpcpp -c $XDG_CONFIG_HOME/ncmpcpp/config'
-fi
+which ncmpcpp &>/dev/null && alias ncmpcpp='ncmpcpp -c $XDG_CONFIG_HOME/ncmpcpp/config'
 
 # Aliases {{{
-if [[ -e "$(which term_info 2>/dev/null)" ]]; then
-   # Add the header when clearing if the header script is defined
-   alias clear='clear;term_info'
-fi
+# Add the header when clearing if the header script is defined
+which term_info &>/dev/null && alias clear='clear;term_info'
+# Use human readable output for things
 alias df="df -h"
 alias du="du -h"
 alias ping='ping -c 5'
 # }}}
 
 # GPG {{{
-if [[ -e "$(which gpg-agent 2>/dev/null)" ]] ; then
+if which gpg-agent &>/dev/null; then
    if [ ! gpg-connect-agent --quiet /bye > /dev/null 2> /dev/null ]; then
       local GPG_AGENT_ENV=$GNUPGHOME/gpg-agent.env
       eval $(gpg-agent --daemon --enable-ssh-support --quiet --write-env-file $GPG_AGENT_ENV)
@@ -68,20 +62,20 @@ fi # }}}
 
 # SSH-Agent startup {{{
 if [[ -z "$SSH_AUTH_SOCK" ]]; then
-   if [[ -e "$(which gpg-agent 2>/dev/null)" ]]; then
+   if which gpg-agent &>/dev/null; then
       #export SSH_AUTH_SOCK="${XDG_RUNTIME_DIR}/gnupg/S.gpg-agent.ssh"
       export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
       gpgconf --launch gpg-agent
       export GPG_TTY=$(tty)
       gpg-connect-agent updatestartuptty /bye > /dev/null
-   elif [[ -e "$(which ssh-agent 2>/dev/null)" ]]; then
+   elif which ssh-agent &>/dev/null; then
       eval `ssh-agent -s` && ssh-add
       # symlink and switch to the symlink to keep a standard auth sock definition
       [[ -h "$HOME/.ssh/auth.sock" ]] && rm "$HOME/.ssh/auth.sock"
       ln -s $SSH_AUTH_SOCK "$HOME/.ssh/auth.sock"
       export SSH_AUTH_SOCK="$HOME/.ssh/auth.sock"
    fi
-elif [[ -e "$(which gpg-agent 2>/dev/null)" ]]; then
+elif which gpg-agent &>/dev/null; then
    # Correct GPG settings even if there is a defined auth sock
    export GPG_TTY=$(tty)
    gpg-connect-agent updatestartuptty /bye > /dev/null

@@ -3,4 +3,4 @@
 
 export AUR_HOME=$HOME/.local/aur
 [[ ! -d "$AUR_HOME" ]] && mkdir -p $AUR_HOME
-# vim: ft=zsh:foldmethod=marker
+# vim: ft=sh
