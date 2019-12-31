@@ -3,7 +3,7 @@
 set -euo pipefail
 
 # This may not be defined as this is the linking script that sets up the userdirs
-export XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-'$HOME/.config'}
+export XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-$HOME/.config}
 
 show_help() {
    cat <<-HELP
@@ -34,7 +34,7 @@ linkIfNot() {
 }
 
 installed() {
-   pacman -Q "$1"
+   pacman -Q "$1" &> /dev/null
 }
 
 
@@ -44,8 +44,8 @@ buildHZSH() {
       return
    fi
    ghc \
-      -dynamic zsh/plugins/hzsh_path.src/zsh_path.hs \
-      -o zsh/plugins/hzsh_path
+      -dynamic $PWD/zsh/plugins/hzsh_path.src/zsh_path.hs \
+      -o $PWD/zsh/plugins/hzsh_path
 }
 
 link() {
@@ -65,7 +65,7 @@ link() {
    # Language package managers
    #linkIfNot gem/gemrc $HOME/.gemrc
    #linkIfNot npm/npmrc $XDG_CONFIG_HOME/npmrc
-   linkIfNot pip/pip.conf $XDG_CONFIG_HOME/pip.conf
+   linkIfNot pip $XDG_CONFIG_HOME/pip
 
    # Apps
    if installed "gnupg"; then
@@ -88,14 +88,9 @@ link() {
          linkIfNot git/gitconfig $HOME/.gitconfig
       fi
       linkIfNot git/gitignore $HOME/.gitignore
-      mkdir -p $HOME/.local/bin
-      linkIfNot git/wrapper.sh $HOME/.local/bin/git
    fi
    installed "ack" && linkIfNot ack/ackrc $XDG_CONFIG_HOME/ackrc
-   installed "mutt" && linkIfNot mutt $HOME/.mutt
    installed "weechat" && linkIfNot weechat $XDG_CONFIG_HOME/weechat
-   installed "irssi" && linkIfNot irssi $HOME/.irssi
-   installed "ncmpcpp" && linkIfNot ncmpcpp $XDG_CONFIG_HOME/ncmpcpp
 } # }}}
 ####################################################################################
 # Actions {{{
@@ -104,11 +99,11 @@ install() {
    sudo pacman -S --needed \
       tmux zsh \
       ack colordiff exa git \
-      weechat \
-      ncmpcpp
+      weechat which fakeroot \
+      jq man-db man-pages
    sudo pacman -S --needed \
       openssh pcsclite ccid
-   sudo systemctl enable --now pcsclite.service
+   #sudo systemctl enable --now pcsclite.service
 }
 
 initialize() {
