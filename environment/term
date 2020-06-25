@@ -17,6 +17,8 @@ export GNUPGHOME=$HOME/.local/gpg
 export PASSWORD_STORE_DIR=$HOME/.local/password_store
 # LESS
 export LESSHISTSIZE=0
+
+# Aliases {{{
 # GREP
 if which rg &>/dev/null; then
    # replace grep with ripgrep if installed
@@ -38,10 +40,19 @@ if which weechat &>/dev/null; then
    alias weechat='weechat-curses -d $XDG_CONFIG_HOME/weechat'
    alias irc='weechat'
 fi
+# CAT
+if which bat &>/dev/null; then
+   alias cat='bat'
+   export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+fi
 # MPD
 which ncmpcpp &>/dev/null && alias ncmpcpp='ncmpcpp -c $XDG_CONFIG_HOME/ncmpcpp/config'
+# Clipboard
+if which xclip &>/dev/null; then
+   alias copy='xclip -in -selection clipboard'
+   alias clipboard='xclip -out -selection clipboard'
+fi
 
-# Aliases {{{
 # Add the header when clearing if the header script is defined
 which term_info &>/dev/null && alias clear='clear;term_info'
 # Use human readable output for things

@@ -16,12 +16,8 @@ for r in $HOME/.local/environment/*; do
    [[ $DEBUG > 0 ]] && echo "zsh: sourcing $r"
    source $r
 done # }}}
-# Lines configured by zsh-newuser-install
-HISTFILE=$XDG_CACHE_HOME/histfile
-HISTSIZE=10000
-SAVEHIST=10000
-# End of lines configured by zsh-newuser-install
 
+# Plugin/Settings configs
 FPATH=$FPATH:$XDG_CONFIG_HOME/zsh/prompts
 PLUGIN_DIR=$XDG_CONFIG_HOME/zsh/plugins
 ZSH_SETTINGS_DIR=$XDG_CONFIG_HOME/zsh/settings

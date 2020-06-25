@@ -96,13 +96,19 @@ link() {
 # Actions {{{
 install() {
    sudo pacman -Sy
+   # CLI utilities
    sudo pacman -S --needed \
-      tmux zsh \
-      ack colordiff exa git \
+      tmux zsh ack git \
       weechat which fakeroot \
-      jq man-db man-pages
+      jq man-db man-pages \
+      xdg-user-dirs
+   systemctl enable --now --user xdg-user-dirs-update
+   # GPG agent stuff
    sudo pacman -S --needed \
       openssh pcsclite ccid
+   # CLI improvements/replacements
+   sudo pacman -S --needed \
+      bat colordiff exa ripgrep
    #sudo systemctl enable --now pcsclite.service
 }
 

@@ -20,6 +20,7 @@ venv
 *.secret
 .den.ini
 .*.md
+/.local.vim
 
 # Compiled files
 *.hi
