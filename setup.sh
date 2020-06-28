@@ -96,31 +96,32 @@ link() {
 }
 
 install() {
-   sudo pacman -Sy
-   # CLI utilities
-   sudo pacman -S --needed \
-      tmux zsh git \
+   sudo pacman -Sy --needed \
+      # CLI utilities
+      zsh git \
       which fakeroot \
       man-db man-pages \
-      xdg-user-dirs
-   systemctl enable --now --user xdg-user-dirs-update
-   # GPG agent stuff
-   sudo pacman -S --needed \
+      xdg-user-dirs \
+      python3 \
+      # GPG agent stuff
       openssh pcsclite ccid
+   sudo systemctl enable --now pcscd.socket
+   systemctl enable --now --user xdg-user-dirs-update
    # setup supervisord
    pyenv supervisor supervisor
-   # setup maestral
-   pyenv maestral "maestral[gui]"
-   #sudo systemctl enable --now pcsclite.service
-   sudo systemctl enable --now pcscd.socket
 }
 
 pyvenv() {
    name=$1
    shift  # remove the pyenv name, the rest are pip packages
+   envdir="$HOME/.local/virtualenvs/$name"
+   if [[ -d "$envdir" ]]; then
+      echo "virtualenv $name already exists..."
+      return
+   fi
    mkdir -p $HOME/.local/virtualenvs
-   python3 -m venv --prompt "($name)" $HOME/.local/virtualenvs/$name
-   $HOME/.local/virtualenvs/$name/bin/python3 -m pip install $*
+   python3 -m venv --prompt "($name)" $envdir
+   $envdir/bin/python3 -m pip install $*
 }
 
 initialize() {
