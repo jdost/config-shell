@@ -89,6 +89,7 @@ link() {
    fi
    installed "ack" && linkIfNot ack/ackrc $XDG_CONFIG_HOME/ackrc
    installed "weechat" && linkIfNot weechat $XDG_CONFIG_HOME/weechat
+   # supervisord
    mkdir -p $XDG_CONFIG_HOME/supervisord
    linkIfNot supervisord/supervisord.conf $XDG_CONFIG_HOME/supervisord/supervisord.conf
    linkIfNot $HOME/.local/virtualenvs/supervisor/bin/supervisorctl $HOME/.local/bin/supervisorctl
@@ -100,7 +101,7 @@ install() {
    sudo pacman -S --needed \
       tmux zsh git \
       which fakeroot \
-      jq man-db man-pages \
+      man-db man-pages \
       xdg-user-dirs
    systemctl enable --now --user xdg-user-dirs-update
    # GPG agent stuff
@@ -108,6 +109,8 @@ install() {
       openssh pcsclite ccid
    # setup supervisord
    pyenv supervisor supervisor
+   # setup maestral
+   pyenv maestral "maestral[gui]"
    #sudo systemctl enable --now pcsclite.service
    sudo systemctl enable --now pcscd.socket
 }
