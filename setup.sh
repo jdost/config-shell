@@ -19,8 +19,6 @@ commands:
 HELP
 }
 
-####################################################################################
-# Helpers {{{
 linkIfNot() {
    [[ -e "$2" ]] && return
 
@@ -91,25 +89,35 @@ link() {
    fi
    installed "ack" && linkIfNot ack/ackrc $XDG_CONFIG_HOME/ackrc
    installed "weechat" && linkIfNot weechat $XDG_CONFIG_HOME/weechat
-} # }}}
-####################################################################################
-# Actions {{{
+   mkdir -p $XDG_CONFIG_HOME/supervisord
+   linkIfNot supervisord/supervisord.conf $XDG_CONFIG_HOME/supervisord/supervisord.conf
+   linkIfNot $HOME/.local/virtualenvs/supervisor/bin/supervisorctl $HOME/.local/bin/supervisorctl
+}
+
 install() {
    sudo pacman -Sy
    # CLI utilities
    sudo pacman -S --needed \
-      tmux zsh ack git \
-      weechat which fakeroot \
+      tmux zsh git \
+      which fakeroot \
       jq man-db man-pages \
       xdg-user-dirs
    systemctl enable --now --user xdg-user-dirs-update
    # GPG agent stuff
    sudo pacman -S --needed \
       openssh pcsclite ccid
-   # CLI improvements/replacements
-   sudo pacman -S --needed \
-      bat colordiff exa ripgrep
+   # setup supervisord
+   pyenv supervisor supervisor
    #sudo systemctl enable --now pcsclite.service
+   sudo systemctl enable --now pcscd.socket
+}
+
+pyvenv() {
+   name=$1
+   shift  # remove the pyenv name, the rest are pip packages
+   mkdir -p $HOME/.local/virtualenvs
+   python3 -m venv --prompt "($name)" $HOME/.local/virtualenvs/$name
+   $HOME/.local/virtualenvs/$name/bin/python3 -m pip install $*
 }
 
 initialize() {
@@ -125,10 +133,9 @@ initialize() {
 update() {
    git pull
    git submodule -q foreach git pull -q origin master
-} # }}}
-####################################################################################
+}
 
-case "${1:-''}" in
+case "${1:-}" in
    'init')
       install
       initialize

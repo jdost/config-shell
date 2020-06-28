@@ -3,4 +3,7 @@
 
 export AUR_HOME=$HOME/.local/aur
 [[ ! -d "$AUR_HOME" ]] && mkdir -p $AUR_HOME
+
+supervisordbin="$HOME/.local/virtualenvs/supervisor/bin/supervisord"
+[[ -x "$supervisordbin" ]] && "$supervisordbin" --configuration "$XDG_CONFIG_HOME/supervisord/supervisord.conf"
 # vim: ft=sh
