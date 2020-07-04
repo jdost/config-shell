@@ -1,5 +1,5 @@
 # global aliases {{{
-alias serve="python2 -m SimpleHTTPServer"
+alias serve="python3 -m http.server"
 # }}}
 
 # vim: ft=zsh foldmethod=marker

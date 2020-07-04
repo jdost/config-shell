@@ -60,6 +60,7 @@ link() {
    # bash
    linkIfNot inputrc/inputrc $XDG_CONFIG_HOME/inputrc
    linkIfNot bash/bashrc $HOME/.bashrc
+
    # Language package managers
    #linkIfNot gem/gemrc $HOME/.gemrc
    #linkIfNot npm/npmrc $XDG_CONFIG_HOME/npmrc
@@ -89,26 +90,27 @@ link() {
    fi
    installed "ack" && linkIfNot ack/ackrc $XDG_CONFIG_HOME/ackrc
    installed "weechat" && linkIfNot weechat $XDG_CONFIG_HOME/weechat
+   linkIfNot bat $XDG_CONFIG_HOME/bat
    # supervisord
    mkdir -p $XDG_CONFIG_HOME/supervisord
    linkIfNot supervisord/supervisord.conf $XDG_CONFIG_HOME/supervisord/supervisord.conf
-   linkIfNot $HOME/.local/virtualenvs/supervisor/bin/supervisorctl $HOME/.local/bin/supervisorctl
+   if [[ ! -e "$HOME/.local/bin/supervisorctl" ]]; then
+      ln -s $HOME/.local/virtualenvs/supervisor/bin/supervisorctl $HOME/.local/bin/supervisorctl
+   fi
 }
 
 install() {
    sudo pacman -Sy --needed \
-      # CLI utilities
       zsh git \
       which fakeroot \
       man-db man-pages \
       xdg-user-dirs \
       python3 \
-      # GPG agent stuff
       openssh pcsclite ccid
    sudo systemctl enable --now pcscd.socket
    systemctl enable --now --user xdg-user-dirs-update
    # setup supervisord
-   pyenv supervisor supervisor
+   pyvenv supervisor supervisor
 }
 
 pyvenv() {

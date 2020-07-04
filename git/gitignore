@@ -11,6 +11,7 @@
 # Python
 *.py[co]
 *.egg-info
+.mypy_cache
 .venv
 env
 venv

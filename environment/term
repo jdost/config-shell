@@ -72,10 +72,20 @@ if which gpg-agent &>/dev/null; then
 fi # }}}
 
 # SSH-Agent startup {{{
-if [[ -z "$SSH_AUTH_SOCK" ]]; then
-   if which gpg-agent &>/dev/null; then
+if [[ "$SSH_AUTH_SOCK" == "$HOME/.ssh/auth.sock" ]]; then
+   # do nothing, this should be carried over from elsewhere
+elif [[ -e "$SSH_AUTH_SOCK" ]]; then
+   [[ -h "$HOME/.ssh/auth.sock" ]] && rm "$HOME/.ssh/auth.sock"
+   ln -s "$SSH_AUTH_SOCK" "$HOME/.ssh/auth.sock"
+   export SSH_AUTH_SOCK="$HOME/.ssh/auth.sock"
+else
+   export SSH_AUTH_SOCK="$HOME/.ssh/auth.sock"
+   if ssh-add -l &>/dev/null; then
+      # do nothing, the inheritted socket is safe
+   elif which gpg-agent &>/dev/null; then
       #export SSH_AUTH_SOCK="${XDG_RUNTIME_DIR}/gnupg/S.gpg-agent.ssh"
-      export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
+      [[ -h "$HOME/.ssh/auth.sock" ]] && rm "$HOME/.ssh/auth.sock"
+      ln -s "$(gpgconf --list-dirs agent-ssh-socket)" "$HOME/.ssh/auth.sock"
       gpgconf --launch gpg-agent
       export GPG_TTY=$(tty)
       gpg-connect-agent updatestartuptty /bye > /dev/null
@@ -86,21 +96,12 @@ if [[ -z "$SSH_AUTH_SOCK" ]]; then
       ln -s $SSH_AUTH_SOCK "$HOME/.ssh/auth.sock"
       export SSH_AUTH_SOCK="$HOME/.ssh/auth.sock"
    fi
-elif which gpg-agent &>/dev/null; then
+fi
+
+if which gpg-agent &>/dev/null; then
    # Correct GPG settings even if there is a defined auth sock
    export GPG_TTY=$(tty)
    gpg-connect-agent updatestartuptty /bye > /dev/null
-else
-   # We have an auth sock defined, lets check if it works
-   if ssh-add -l &>/dev/null; then
-      # The auth sock works, don't mess with it...
-   elif SSH_AUTH_SOCK="$HOME/.ssh/auth.sock" ssh-add -l &>/dev/null; then
-      # The defined one doesn't work, but the linked one does, switch to it
-      export SSH_AUTH_SOCK="$HOME/.ssh/auth.sock"
-   else
-      export SSH_AUTH_SOCK=""
-      rm "$HOME/.ssh/auth.sock"
-   fi
 fi # }}}
 
 # vim: ft=zsh:foldmethod=marker

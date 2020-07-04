@@ -15,7 +15,7 @@ seps = map makeSep [0..]
     makeSep 0 = "%F{240}"
     makeSep n = " %F{" ++ (show n) ++ "}»%F{240} "
 
-buildPath :: [String] -> [String] -> Int -> String
+buildPath :: [String] -> [String] -> Integer -> String
 buildPath [] _ 0 = "%F{240}/"
 buildPath [] _ _ = ""
 buildPath x c 0

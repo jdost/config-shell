@@ -9,6 +9,9 @@
 [push]
    default = current
 
+[pull]
+   ff = only
+
 [alias]
    st = status -s
    co = checkout

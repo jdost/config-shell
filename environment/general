@@ -4,10 +4,15 @@
 export AUR_HOME=$HOME/.local/aur
 [[ ! -d "$AUR_HOME" ]] && mkdir -p $AUR_HOME
 
-supervisorbindir=$HOME/.local/virtualenvs/supervisor/bin
-if [[ -d "$supervisordbindir"/ ]]; then
-   if ! "$supervisorbindir"/supervisorctl pid &>/dev/null; then
-      "$supervisorbindir"/supervisord --configuration "$XDG_CONFIG_HOME/supervisord/supervisord.conf"
+# Don't start supervisord if no display is available, it breaks a ton of stuff that
+#   expects an X11 server to be running
+if [[ -n "${DISPLAY:-}" ]]; then
+   supervisorbindir=$HOME/.local/virtualenvs/supervisor/bin
+   if [[ -d "$supervisordbindir"/ ]]; then
+      [[ ! -d "$HOME/.local/supervisor" ]] && mkdir -p $HOME/.local/supervisor
+      if ! "$supervisorbindir"/supervisorctl pid &>/dev/null; then
+         "$supervisorbindir"/supervisord --configuration "$XDG_CONFIG_HOME/supervisord/supervisord.conf"
+      fi
    fi
 fi
 # vim: ft=sh
