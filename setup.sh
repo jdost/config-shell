@@ -37,10 +37,11 @@ installed() {
 
 
 buildHZSH() {
-   if !which ghc &>/dev/null ; then  # ghc is not defined, don't build it
+   if ! which ghc &>/dev/null ; then  # ghc is not defined, don't build it
       echo "ERROR: please install 'ghc'..."
       return
    fi
+   
    ghc \
       -dynamic $PWD/zsh/plugins/hzsh_path.src/zsh_path.hs \
       -o $PWD/zsh/plugins/hzsh_path

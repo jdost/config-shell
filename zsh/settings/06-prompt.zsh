@@ -9,8 +9,10 @@ local VI_CURSOR=0
 
 if [ -x $PLUGIN_DIR/hzsh_path ]; then
    local FANCY_PATH_CMD="$PLUGIN_DIR/hzsh_path"
-else
+elif which ruby &> /dev/null; then
    local FANCY_PATH_CMD="$PLUGIN_DIR/rzsh_path"
+else
+   local FANCY_PATH_CMD="echo"
 fi
 
 setprompt() {

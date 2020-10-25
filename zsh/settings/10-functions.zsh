@@ -29,36 +29,6 @@ try () {
 }
 # }}}
 
-# store website offline {{{
-export OFFLINE_LOC=$HOME/downloads/offline
-offline () {
-   local originDir=$PWD
-   cd $OFFLINE_LOC
-
-   local dirName=`print "$1" | sed "s/\//_/g"`
-   mkdir "$dirName"
-   cd "$dirName"
-
-   local domain=`echo "$1" | sed "s#/.*##"`
-   wget --recursive \
-      --no-clobber \
-      --page-requisites \
-      --html-extension \
-      --convert-links \
-      --domains $domain \
-      --no-parent \
-         $1
-   cd $originDir
-}
-# }}}
-
-# Some OSX polyfills {{{
-if [ -z "$(type realpath %1> /dev/null)" ]; then
-   realpath() {
-      [[ $1 = /* ]] && echo "$1" || echo "$PWD/${1#./}"
-   }
-fi # }}}
-
 # creates a custom name for the current directory {{{
 export ZSH_DIR_FILE="10-directories.zsh"
 namedir () {

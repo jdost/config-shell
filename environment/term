@@ -1,13 +1,7 @@
 # Variables
 
-# PIP
-export PIP_DOWNLOAD_CACHE=$XDG_CACHE_HOME/pip
-export PIP_CONFIG_FILE=$XDG_CONFIG_HOME/pip.conf
 # VIRTUALENV
-export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python
 export WORKON_HOME=$HOME/.local/virtualenvs
-export VIRTUALENVWRAPPER_HOOK_DIR=$HOME/.local/virtualenvs
-export VIRTUALENVWRAPPER_LOG_DIR=$HOME/.local/virtualenvs
 # ACK
 export ACKRC=$XDG_CONFIG_HOME/ackrc
 # INPUTRC
